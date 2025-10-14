@@ -31,6 +31,7 @@ interface ScanResult {
 }
 
 const App: React.FC = () => {
+  //States
   const [currentView, setCurrentView] = useState<'home' | 'scanner' | 'about'>('home')
   const [targetUrl, setTargetUrl] = useState('http://testphp.vulnweb.com/')
   const [scanning, setScanning] = useState(false)
@@ -39,6 +40,7 @@ const App: React.FC = () => {
   const [generatingPDF, setGeneratingPDF] = useState(false)
   const [scanProgress, setScanProgress] = useState(0)
 
+  //Callback function
   const runScan = async () => {
     setScanning(true)
     setScanProgress(0)
@@ -46,10 +48,10 @@ const App: React.FC = () => {
     // Improved progress simulation with consistent speed
     const progressInterval = setInterval(() => {
       setScanProgress(prev => {
-        if (prev >= 95) return prev // Stop at 95% until scan completes
+        if (prev >= 75) return prev // Stop at 95% until scan completes
         // More consistent progress increments
         const increment = prev < 50 ? 8 : prev < 80 ? 5 : 2
-        return Math.min(prev + increment, 95)
+        return Math.min(prev + increment, 75)
       })
     }, 150) // Faster updates
     

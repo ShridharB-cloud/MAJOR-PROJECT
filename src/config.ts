@@ -1,8 +1,8 @@
 // API Configuration
 export const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://cyber-scanner-backend.railway.app' // Replace with your deployed backend URL
-  : 'http://192.168.79.180:8000' // Use your computer's IP for mobile access
+  ? 'https://cyby-backend.onrender.com' // Deployed backend URL
+  : 'http://localhost:5001' // Local backend URL
 
 export const FRONTEND_URL = process.env.NODE_ENV === 'production'
-  ? 'https://cyber-scanner.vercel.app' // Replace with your deployed frontend URL
-  : 'http://localhost:5173'
+  ? 'https://cyby-security-scanner.vercel.app' // Deployed frontend URL
+  : 'http://localhost:5000' // Local frontend URL

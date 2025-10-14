@@ -28,7 +28,7 @@ app = FastAPI(title="CYBY Security Scanner API", version="1.0.0")
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_origins=["http://localhost:5000", "http://localhost:5173", "http://localhost:3000", "https://cyby-security-scanner.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -642,8 +642,15 @@ def generate_pdf_report(scan_result: ScanResult) -> bytes:
             fontName='Helvetica'
         )
         
-        # Title
-        story.append(Paragraph("CYBY - Security Report", title_style))
+        # Derive a friendly display name for the target (domain)
+        try:
+            parsed_target = urlparse(scan_result.target)
+            target_domain = parsed_target.hostname or scan_result.target
+        except Exception:
+            target_domain = scan_result.target
+
+        # Title (include target domain prominently)
+        story.append(Paragraph(f"CYBY - Security Report for {target_domain}", title_style))
         story.append(Spacer(1, 15))
         
         # Risk Level
@@ -665,7 +672,7 @@ def generate_pdf_report(scan_result: ScanResult) -> bytes:
         story.append(Paragraph("Scan Summary", heading_style))
         
         summary_data = [
-            ['Target Website', scan_result.target],
+            ['Target Website', f"{target_domain} ( {scan_result.target} )"],
             ['Scan Date', scan_result.timestamp.split('T')[0]],
             ['Total Issues Found', str(scan_result.total_vulnerabilities)],
             ['Risk Score', f"{scan_result.risk_score}/100"],
@@ -1017,4 +1024,6 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    import os
+    port = int(os.environ.get("PORT", 5001))
+    uvicorn.run(app, host="0.0.0.0", port=port)
