@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Shield, Zap, AlertTriangle, CheckCircle, Play, Eye, Lock, Code, Bug, Search, Upload, Key, Clock, Globe, Network, Download, FileText, Cpu, Database, Terminal, Hexagon, Activity } from 'lucide-react'
+import { Shield, Zap, AlertTriangle, CheckCircle, Play, Eye, Lock, Code, Bug, Search, Key, Hexagon, Activity, Download } from 'lucide-react'
 import { API_BASE_URL } from './config'
 import './App.css'
 
@@ -44,7 +44,7 @@ const App: React.FC = () => {
   const runScan = async () => {
     setScanning(true)
     setScanProgress(0)
-    
+
     // Improved progress simulation with consistent speed
     const progressInterval = setInterval(() => {
       setScanProgress(prev => {
@@ -54,7 +54,7 @@ const App: React.FC = () => {
         return Math.min(prev + increment, 75)
       })
     }, 150) // Faster updates
-    
+
     try {
       const response = await fetch(`${API_BASE_URL}/scan`, {
         method: 'POST',
@@ -68,21 +68,21 @@ const App: React.FC = () => {
           max_pages: 5  // Further reduced for faster scanning
         })
       })
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
-      
+
       const result = await response.json()
       setScanResult(result)
       setScanProgress(100)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Scan error:', error)
       // Better error message
-      if (error.message.includes('Failed to fetch')) {
-        alert('Cannot connect to backend server. Please make sure the backend is running on port 8000.\n\nTo start the backend:\n1. Open terminal\n2. cd to backend folder\n3. Run: python main.py')
+      if (error.message && error.message.includes('Failed to fetch')) {
+        alert('Cannot connect to backend server. Please make sure the backend is running on port 5001.\n\nTo start the backend:\n1. Open terminal\n2. cd to backend folder\n3. Run: python main.py')
       } else {
-        alert(`Scan failed: ${error.message}`)
+        alert(`Scan failed: ${error.message || 'Unknown error'}`)
       }
     } finally {
       clearInterval(progressInterval)
@@ -93,7 +93,7 @@ const App: React.FC = () => {
 
   const generatePDF = async () => {
     if (!scanResult) return
-    
+
     setGeneratingPDF(true)
     try {
       console.log('Starting PDF generation...')
@@ -109,29 +109,29 @@ const App: React.FC = () => {
           max_pages: 5
         })
       })
-      
+
       console.log('PDF response status:', response.status)
-      
+
       if (!response.ok) {
         const errorText = await response.text()
         console.error('PDF generation error:', errorText)
         throw new Error(`PDF generation failed: ${response.status} ${response.statusText}`)
       }
-      
+
       const result = await response.json()
       console.log('PDF generation result:', result)
-      
+
       if (!result.success) {
         throw new Error('PDF generation was not successful')
       }
-      
+
       // Convert hex to blob and download
       const hex = result.content
       const bytes = new Uint8Array(hex.length / 2)
       for (let i = 0; i < hex.length; i += 2) {
         bytes[i / 2] = parseInt(hex.substr(i, 2), 16)
       }
-      
+
       const blob = new Blob([bytes], { type: 'application/pdf' })
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
@@ -141,14 +141,14 @@ const App: React.FC = () => {
       a.click()
       window.URL.revokeObjectURL(url)
       document.body.removeChild(a)
-      
+
       console.log('PDF downloaded successfully')
-    } catch (error) {
+    } catch (error: any) {
       console.error('PDF generation error:', error)
-      if (error.message.includes('Failed to fetch')) {
-        alert('Cannot connect to backend server. Please make sure the backend is running on port 8000.')
+      if (error.message && error.message.includes('Failed to fetch')) {
+        alert('Cannot connect to backend server. Please make sure the backend is running on port 5001.')
       } else {
-        alert(`PDF generation failed: ${error.message}`)
+        alert(`PDF generation failed: ${error.message || 'Unknown error'}`)
       }
     } finally {
       setGeneratingPDF(false)
@@ -199,7 +199,7 @@ const App: React.FC = () => {
       <nav className="relative z-50 border-b border-green-500/20 bg-black/50 backdrop-blur-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <motion.div 
+            <motion.div
               className="flex items-center space-x-3"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -213,17 +213,16 @@ const App: React.FC = () => {
                 CYBY
               </span>
             </motion.div>
-            
+
             <div className="flex items-center space-x-8">
               {['HOME', 'SCANNER', 'ABOUT'].map((view) => (
                 <button
                   key={view.toLowerCase()}
                   onClick={() => setCurrentView(view.toLowerCase() as any)}
-                  className={`transition-all duration-200 hover:text-green-400 ${
-                    currentView === view.toLowerCase() 
-                      ? 'text-green-400 border-b-2 border-green-400' 
-                      : 'text-gray-300 hover:border-b-2 hover:border-green-400/50'
-                  }`}
+                  className={`transition-all duration-200 hover:text-green-400 ${currentView === view.toLowerCase()
+                    ? 'text-green-400 border-b-2 border-green-400'
+                    : 'text-gray-300 hover:border-b-2 hover:border-green-400/50'
+                    }`}
                 >
                   {view}
                 </button>
@@ -247,7 +246,7 @@ const App: React.FC = () => {
             >
               {/* Hero Section */}
               <div className="text-center mb-16">
-                <motion.h1 
+                <motion.h1
                   className="text-6xl font-bold mb-6"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -257,8 +256,8 @@ const App: React.FC = () => {
                     Protect Your Systems
                   </span>
                 </motion.h1>
-                
-                <motion.p 
+
+                <motion.p
                   className="text-2xl text-gray-300 mb-8 max-w-4xl mx-auto font-medium"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -266,8 +265,8 @@ const App: React.FC = () => {
                 >
                   AI Based vulnerability scanner for testing common website security flaws
                 </motion.p>
-                
-                <motion.div 
+
+                <motion.div
                   className="flex flex-col sm:flex-row gap-4 justify-center"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -280,7 +279,7 @@ const App: React.FC = () => {
                     <Play className="w-5 h-5" />
                     <span>Start Security Scan</span>
                   </button>
-                  
+
                   <button
                     onClick={() => setCurrentView('about')}
                     className="px-8 py-4 border border-green-400 text-green-400 font-bold rounded-lg hover:bg-green-400/10 transition-all duration-300"
@@ -345,7 +344,7 @@ const App: React.FC = () => {
               </div>
 
               {/* Description Section */}
-              <motion.div 
+              <motion.div
                 className="bg-gray-800/30 border border-gray-700/50 rounded-xl p-8 text-center"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -353,8 +352,8 @@ const App: React.FC = () => {
               >
                 <h2 className="text-3xl font-bold mb-4 text-green-400">Our Mission</h2>
                 <p className="text-lg text-gray-300 max-w-4xl mx-auto">
-                  Our service aims to reduce the risk of cyber attacks and protect against unauthorized access. 
-                  We provide cutting-edge AI-powered vulnerability scanning with comprehensive coverage of OWASP Top 10 
+                  Our service aims to reduce the risk of cyber attacks and protect against unauthorized access.
+                  We provide cutting-edge AI-powered vulnerability scanning with comprehensive coverage of OWASP Top 10
                   and beyond, helping organizations identify and fix security weaknesses before they can be exploited.
                 </p>
               </motion.div>
@@ -448,7 +447,7 @@ const App: React.FC = () => {
                           </div>
                         </div>
                       )}
-                      
+
                       <button
                         onClick={runScan}
                         disabled={scanning}
@@ -466,7 +465,7 @@ const App: React.FC = () => {
                           </div>
                         )}
                       </button>
-                      
+
                       {/* PDF Generation Button */}
                       {scanResult && (
                         <button
@@ -593,8 +592,8 @@ const App: React.FC = () => {
                 <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-8 space-y-6">
                   <h2 className="text-2xl font-bold text-green-400 mb-4">Project Overview</h2>
                   <p className="text-gray-300 text-lg leading-relaxed">
-                    CYBY is a comprehensive AI-powered web security scanning platform designed for educational 
-                    and ethical testing purposes. The system combines traditional vulnerability detection techniques 
+                    CYBY is a comprehensive AI-powered web security scanning platform designed for educational
+                    and ethical testing purposes. The system combines traditional vulnerability detection techniques
                     with advanced machine learning to provide accurate and actionable security assessments across 6 attack vectors with 80%+ accuracy.
                   </p>
 
@@ -668,10 +667,10 @@ const App: React.FC = () => {
 
                   <div className="bg-gray-900/30 rounded-lg p-4 border border-gray-600/30 mt-6">
                     <p className="text-gray-300 text-sm">
-                      <strong className="text-yellow-400">Important:</strong> This tool is designed for educational purposes and ethical security testing only. 
+                      <strong className="text-yellow-400">Important:</strong> This tool is designed for educational purposes and ethical security testing only.
                       Always ensure you have explicit permission before scanning any target. Use responsibly and in accordance with applicable laws and regulations.
-        </p>
-      </div>
+                    </p>
+                  </div>
                 </div>
               </div>
             </motion.div>
