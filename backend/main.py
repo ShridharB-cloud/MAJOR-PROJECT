@@ -15,7 +15,6 @@ import subprocess
 import threading
 from urllib.parse import urlparse, urljoin
 from bs4 import BeautifulSoup
-import csv
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -81,15 +80,6 @@ DIR_TRAVERSAL_PAYLOADS = [
     "..\\..\\..\\windows\\system32\\drivers\\etc\\hosts",
     "....//....//....//etc/passwd",
     "..%2f..%2f..%2fetc%2fpasswd"
-]
-
-# File upload test files
-FILE_UPLOAD_TESTS = [
-    ("test.php", "<?php echo 'XSS'; ?>", "application/x-php"),
-    ("test.jsp", "<% out.println('XSS'); %>", "application/x-jsp"),
-    ("test.asp", "<% response.write('XSS') %>", "application/x-asp"),
-    ("test.html", "<script>alert('XSS')</script>", "text/html"),
-    ("test.txt", "Test file content", "text/plain")
 ]
 
 # Common subdomains for enumeration
@@ -310,46 +300,6 @@ def check_directory_traversal(url: str) -> List[Vulnerability]:
     
     return vulnerabilities
 
-def check_file_upload(url: str) -> List[Vulnerability]:
-    vulnerabilities = []
-    
-    try:
-        response = requests.get(url, timeout=10)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # Look for file upload forms
-        upload_forms = soup.find_all('form')
-        for form in upload_forms:
-            file_inputs = form.find_all('input', {'type': 'file'})
-            if file_inputs:
-                action = form.get('action', '')
-                if action:
-                    upload_url = urljoin(url, action)
-                    
-                    for filename, content, content_type in FILE_UPLOAD_TESTS:
-                        try:
-                            files = {'file': (filename, content, content_type)}
-                            upload_response = requests.post(upload_url, files=files, timeout=10)
-                            
-                            # Check if file was uploaded successfully
-                            if upload_response.status_code == 200 and 'success' in upload_response.text.lower():
-                                vulnerabilities.append(Vulnerability(
-                                    type="Unsafe File Upload",
-                                    severity="High",
-                                    url=upload_url,
-                                    description=f"File upload accepts dangerous file type: {filename}",
-                                    recommendation="Implement file type validation and content scanning",
-                                    evidence={"filename": filename, "content_type": content_type}
-                                ))
-                                
-                        except Exception as e:
-                            continue
-                            
-    except Exception as e:
-        pass
-    
-    return vulnerabilities
-
 def check_authentication_bypass(url: str) -> List[Vulnerability]:
     vulnerabilities = []
     
@@ -409,107 +359,16 @@ def check_authentication_bypass(url: str) -> List[Vulnerability]:
     return vulnerabilities
 
 def check_session_management(url: str) -> List[Vulnerability]:
-    vulnerabilities = []
-    
-    try:
-        response = requests.get(url, timeout=10)
-        cookies = response.cookies
-        
-        # Check for insecure session cookies
-        for cookie in cookies:
-            if not cookie.secure and 'session' in cookie.name.lower():
-                vulnerabilities.append(Vulnerability(
-                    type="Insecure Session Cookie",
-                    severity="Medium",
-                    url=url,
-                    description=f"Session cookie '{cookie.name}' is not secure",
-                    recommendation="Set Secure flag on session cookies",
-                    evidence={"cookie_name": cookie.name, "secure": cookie.secure}
-                ))
-            
-            if not hasattr(cookie, 'httponly') or not cookie.httponly:
-                vulnerabilities.append(Vulnerability(
-                    type="Missing HttpOnly Flag",
-                    severity="Medium",
-                    url=url,
-                    description=f"Cookie '{cookie.name}' missing HttpOnly flag",
-                    recommendation="Set HttpOnly flag on sensitive cookies",
-                    evidence={"cookie_name": cookie.name, "httponly": getattr(cookie, 'httponly', False)}
-                ))
-                
-    except Exception as e:
-        pass
-    
-    return vulnerabilities
+    # Session management checks removed for this project version
+    return []
 
 def check_rate_limiting(url: str) -> List[Vulnerability]:
-    vulnerabilities = []
-    
-    try:
-        # Test rate limiting by making fewer rapid requests (optimized for speed)
-        responses = []
-        for i in range(10):  # Reduced from 20 to 10
-            response = requests.get(url, timeout=3)  # Reduced timeout
-            responses.append(response.status_code)
-            
-        # Check if all requests succeeded (no rate limiting)
-        if all(status == 200 for status in responses):
-            vulnerabilities.append(Vulnerability(
-                type="Missing Rate Limiting",
-                severity="Medium",
-                url=url,
-                description="No rate limiting detected on endpoint",
-                recommendation="Implement rate limiting to prevent abuse",
-                evidence={"request_count": len(responses), "all_successful": True}
-            ))
-            
-    except Exception as e:
-        pass
-    
-    return vulnerabilities
+    # Rate limiting checks removed for this project version
+    return []
 
 def check_ssl_tls(url: str) -> List[Vulnerability]:
-    vulnerabilities = []
-    
-    try:
-        parsed_url = urlparse(url)
-        if parsed_url.scheme == 'https':
-            hostname = parsed_url.hostname
-            port = parsed_url.port or 443
-            
-            # Check SSL/TLS configuration
-            context = ssl.create_default_context()
-            with socket.create_connection((hostname, port), timeout=10) as sock:
-                with context.wrap_socket(sock, server_hostname=hostname) as ssock:
-                    cert = ssock.getpeercert()
-                    version = ssock.version()
-                    
-                    # Check TLS version
-                    if version in ['TLSv1', 'TLSv1.1']:
-                        vulnerabilities.append(Vulnerability(
-                            type="Weak TLS Version",
-                            severity="High",
-                            url=url,
-                            description=f"Using weak TLS version: {version}",
-                            recommendation="Upgrade to TLS 1.2 or higher",
-                            evidence={"tls_version": version}
-                        ))
-                    
-                    # Check certificate validity
-                    if not cert:
-                        vulnerabilities.append(Vulnerability(
-                            type="Invalid SSL Certificate",
-                            severity="High",
-                            url=url,
-                            description="SSL certificate is invalid or self-signed",
-                            recommendation="Use valid SSL certificate from trusted CA",
-                            evidence={"certificate": "invalid"}
-                        ))
-                        
-    except Exception as e:
-        pass
-    
-    return vulnerabilities
+    # SSL/TLS checks removed for this project version
+    return []
 
 def check_subdomain_enumeration(domain: str) -> List[Vulnerability]:
     vulnerabilities = []
@@ -782,16 +641,10 @@ def get_simple_recommendation(vuln_type: str) -> str:
     recommendations = {
         "Missing Security Header": "Add security headers to your web server configuration. Contact your web developer or hosting provider.",
         "Authentication Bypass": "Implement strong passwords and multi-factor authentication (MFA).",
-        "Missing Rate Limiting": "Add rate limiting to prevent server overload. Set limits like 100 requests per minute per IP.",
         "SQL Injection": "Use parameterized queries and input validation. Never put user input directly in SQL queries.",
         "Cross-Site Scripting (XSS)": "Validate and sanitize all user inputs. Use output encoding when displaying user data.",
         "Missing CSRF Protection": "Add CSRF tokens to all forms that modify data.",
         "Directory Traversal": "Validate file paths and use whitelist-based file access.",
-        "Unsafe File Upload": "Validate file types and scan for malware before allowing uploads.",
-        "Insecure Session Cookie": "Set 'Secure' and 'HttpOnly' flags on session cookies.",
-        "Missing HttpOnly Flag": "Add 'HttpOnly' flag to sensitive cookies.",
-        "Weak TLS Version": "Upgrade to TLS 1.2 or higher. Disable older versions.",
-        "Invalid SSL Certificate": "Get a valid SSL certificate from a trusted provider like Let's Encrypt."
     }
     return recommendations.get(vuln_type, "Consult with a security professional to fix this issue.")
 
@@ -800,15 +653,10 @@ def get_simple_impact(vuln_type: str, severity: str) -> str:
     impacts = {
         "Missing Security Header": "Your website is vulnerable to various attacks like clickjacking and XSS.",
         "Authentication Bypass": "Attackers could gain unauthorized access to user accounts.",
-        "Missing Rate Limiting": "Attackers can crash your server with too many requests.",
         "SQL Injection": "Attackers could steal or modify your database data.",
         "Cross-Site Scripting (XSS)": "Attackers could steal user session cookies or redirect users.",
         "Missing CSRF Protection": "Attackers could perform unauthorized actions on behalf of users.",
         "Directory Traversal": "Attackers could access sensitive files on your server.",
-        "Unsafe File Upload": "Attackers could upload malicious files to compromise your server.",
-        "Insecure Session Cookie": "Session cookies could be stolen, allowing account takeover.",
-        "Weak TLS Version": "Older TLS versions have security vulnerabilities.",
-        "Invalid SSL Certificate": "Users will see security warnings and data may not be encrypted."
     }
     return impacts.get(vuln_type, f"This {severity.lower()} issue should be fixed to improve security.")
 
@@ -862,25 +710,6 @@ def get_impact_explanation(vuln_type: str, severity: str) -> str:
     
     return impacts.get(vuln_type, f"A {severity.lower()} severity issue that should be addressed to improve your website's security.")
 
-def generate_csv_report(scan_result: ScanResult) -> str:
-    output = io.StringIO()
-    writer = csv.writer(output)
-    
-    # Header
-    writer.writerow(['Type', 'Severity', 'URL', 'Description', 'Recommendation'])
-    
-    # Data
-    for vuln in scan_result.vulnerabilities:
-        writer.writerow([
-            vuln.type,
-            vuln.severity,
-            vuln.url,
-            vuln.description,
-            vuln.recommendation
-        ])
-    
-    return output.getvalue()
-
 def calculate_risk_score(vulnerabilities: List[Vulnerability]) -> int:
     if not vulnerabilities:
         return 0
@@ -888,6 +717,7 @@ def calculate_risk_score(vulnerabilities: List[Vulnerability]) -> int:
     high_count = sum(1 for v in vulnerabilities if v.severity == "High")
     medium_count = sum(1 for v in vulnerabilities if v.severity == "Medium")
     low_count = sum(1 for v in vulnerabilities if v.severity == "Low")
+
     
     # Risk scoring: High=10, Medium=5, Low=2
     score = (high_count * 10) + (medium_count * 5) + (low_count * 2)
@@ -920,20 +750,10 @@ async def scan_website(request: ScanRequest):
         if "dir_traversal" in request.scan_types:
             all_vulnerabilities.extend(check_directory_traversal(request.target_url))
         
-        if "file_upload" in request.scan_types:
-            all_vulnerabilities.extend(check_file_upload(request.target_url))
-        
         if "auth_bypass" in request.scan_types:
             all_vulnerabilities.extend(check_authentication_bypass(request.target_url))
         
-        if "session_mgmt" in request.scan_types:
-            all_vulnerabilities.extend(check_session_management(request.target_url))
-        
-        if "rate_limiting" in request.scan_types:
-            all_vulnerabilities.extend(check_rate_limiting(request.target_url))
-        
-        if "ssl_tls" in request.scan_types:
-            all_vulnerabilities.extend(check_ssl_tls(request.target_url))
+        # session_mgmt, rate_limiting, and ssl_tls checks were removed
         
         if "subdomain_enum" in request.scan_types and domain:
             all_vulnerabilities.extend(check_subdomain_enumeration(domain))
@@ -1000,23 +820,6 @@ async def export_pdf_report(request: ScanRequest):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"PDF generation failed: {str(e)}")
-
-@app.post("/export/csv")
-async def export_csv_report(request: ScanRequest):
-    try:
-        # Run scan first
-        scan_result = await scan_website(request)
-        
-        # Generate CSV
-        csv_content = generate_csv_report(scan_result)
-        
-        return {
-            "success": True,
-            "content": csv_content,
-            "filename": f"security_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"CSV generation failed: {str(e)}")
 
 @app.get("/health")
 async def health_check():

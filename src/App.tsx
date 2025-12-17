@@ -36,7 +36,7 @@ const App: React.FC = () => {
   const [targetUrl, setTargetUrl] = useState('http://testphp.vulnweb.com/')
   const [scanning, setScanning] = useState(false)
   const [scanResult, setScanResult] = useState<ScanResult | null>(null)
-  const [scanTypes, setScanTypes] = useState(['sqli', 'xss', 'csrf', 'headers', 'dir_traversal', 'file_upload', 'auth_bypass', 'session_mgmt', 'rate_limiting', 'ssl_tls'])
+  const [scanTypes, setScanTypes] = useState(['sqli', 'xss', 'csrf', 'headers', 'dir_traversal', 'auth_bypass'])
   const [generatingPDF, setGeneratingPDF] = useState(false)
   const [scanProgress, setScanProgress] = useState(0)
 
@@ -181,11 +181,7 @@ const App: React.FC = () => {
     { id: 'csrf', label: 'CSRF', icon: <Shield className="w-4 h-4" />, description: 'Cross-site request forgery' },
     { id: 'headers', label: 'Security Headers', icon: <Lock className="w-4 h-4" />, description: 'Missing security headers' },
     { id: 'dir_traversal', label: 'Directory Traversal', icon: <Search className="w-4 h-4" />, description: 'Path traversal attacks' },
-    { id: 'file_upload', label: 'File Upload', icon: <Upload className="w-4 h-4" />, description: 'Unsafe file uploads' },
-    { id: 'auth_bypass', label: 'Auth Bypass', icon: <Key className="w-4 h-4" />, description: 'Authentication bypass' },
-    { id: 'session_mgmt', label: 'Session Management', icon: <Clock className="w-4 h-4" />, description: 'Session vulnerabilities' },
-    { id: 'rate_limiting', label: 'Rate Limiting', icon: <Zap className="w-4 h-4" />, description: 'Missing rate limits' },
-    { id: 'ssl_tls', label: 'SSL/TLS', icon: <Globe className="w-4 h-4" />, description: 'SSL configuration issues' }
+    { id: 'auth_bypass', label: 'Auth Bypass', icon: <Key className="w-4 h-4" />, description: 'Authentication bypass' }
   ]
 
   return (
@@ -300,17 +296,17 @@ const App: React.FC = () => {
                   {
                     icon: <Shield className="w-12 h-12 text-green-400" />,
                     title: "AI-Powered Detection",
-                    description: "Advanced ML algorithms detect 10+ vulnerability types with 99% accuracy"
+                    description: "Advanced ML algorithms detect 6 vulnerability types with 80+% accuracy"
                   },
                   {
                     icon: <Zap className="w-12 h-12 text-emerald-400" />,
                     title: "Real-time Scanning",
-                    description: "Lightning-fast comprehensive security assessment in under 30 seconds"
+                    description: "Lightning-fast comprehensive security assessment"
                   },
                   {
                     icon: <Lock className="w-12 h-12 text-cyan-400" />,
                     title: "Professional Reports",
-                    description: "Detailed PDF/CSV reports with CVSS scores and remediation guides"
+                    description: "Detailed PDF reports and remediation guides"
                   }
                 ].map((feature, index) => (
                   <motion.div
@@ -337,12 +333,8 @@ const App: React.FC = () => {
                     { name: 'XSS Detection', icon: <Bug className="w-6 h-6" /> },
                     { name: 'CSRF Protection', icon: <Shield className="w-6 h-6" /> },
                     { name: 'Directory Traversal', icon: <Search className="w-6 h-6" /> },
-                    { name: 'File Upload Vulns', icon: <Upload className="w-6 h-6" /> },
                     { name: 'Auth Bypass', icon: <Key className="w-6 h-6" /> },
-                    { name: 'Session Management', icon: <Clock className="w-6 h-6" /> },
-                    { name: 'Rate Limiting', icon: <Zap className="w-6 h-6" /> },
-                    { name: 'SSL/TLS Config', icon: <Globe className="w-6 h-6" /> },
-                    { name: 'WAF Detection', icon: <Network className="w-6 h-6" /> }
+                    { name: 'Security Headers', icon: <Lock className="w-6 h-6" /> },
                   ].map((feature, index) => (
                     <div key={index} className="flex items-center space-x-2 text-gray-300 hover:text-green-400 transition-colors">
                       <span className="text-green-400">{feature.icon}</span>
@@ -603,14 +595,14 @@ const App: React.FC = () => {
                   <p className="text-gray-300 text-lg leading-relaxed">
                     CYBY is a comprehensive AI-powered web security scanning platform designed for educational 
                     and ethical testing purposes. The system combines traditional vulnerability detection techniques 
-                    with advanced machine learning to provide accurate and actionable security assessments across 10+ attack vectors with 80%+ accuracy.
+                    with advanced machine learning to provide accurate and actionable security assessments across 6 attack vectors with 80%+ accuracy.
                   </p>
 
                   <h3 className="text-xl font-bold text-white mt-8 mb-4">Advanced Security Features</h3>
                   <ul className="space-y-3 text-gray-300">
                     <li className="flex items-start">
                       <span className="text-green-400 mr-3">•</span>
-                      <span><strong>Comprehensive Vulnerability Scanning:</strong> SQL Injection, XSS, CSRF, Directory Traversal, File Upload vulnerabilities, Authentication Bypass, Session Management, Rate Limiting, SSL/TLS configuration, and WAF detection</span>
+                      <span><strong>Comprehensive Vulnerability Scanning:</strong> SQL Injection, XSS, CSRF, Security Headers, Directory Traversal, Authentication Bypass</span>
                     </li>
                     <li className="flex items-start">
                       <span className="text-green-400 mr-3">•</span>
@@ -622,7 +614,7 @@ const App: React.FC = () => {
                     </li>
                     <li className="flex items-start">
                       <span className="text-green-400 mr-3">•</span>
-                      <span><strong>Professional Reporting:</strong> Export findings as PDF and CSV with CVSS scores, remediation guides, and executive summaries</span>
+                      <span><strong>Professional Reporting:</strong> Export findings as PDF , remediation guides, and executive summaries</span>
                     </li>
                     <li className="flex items-start">
                       <span className="text-green-400 mr-3">•</span>
@@ -691,7 +683,7 @@ const App: React.FC = () => {
       <footer className="relative z-10 border-t border-gray-700/50 bg-black/50 backdrop-blur-sm mt-16">
         <div className="container mx-auto px-6 py-8">
           <div className="text-center text-gray-400">
-            <p>&copy; 2025 CYBY. Built with ❤️ for cybersecurity education and ethical hacking.</p>
+            <p>&copy; 2025 CYBY. Built for cybersecurity education and ethical hacking.</p>
           </div>
         </div>
       </footer>
