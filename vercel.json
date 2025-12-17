@@ -2,6 +2,10 @@
   "version": 2,
   "builds": [
     {
+      "src": "backend/main.py",
+      "use": "@vercel/python"
+    },
+    {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
@@ -9,11 +13,22 @@
       }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/scan",
+      "destination": "/backend/main.py"
+    },
+    {
+      "source": "/export/pdf",
+      "destination": "/backend/main.py"
+    },
+    {
+      "source": "/health",
+      "destination": "/backend/main.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
-
