@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Shield, Zap, AlertTriangle, CheckCircle, Play, Eye, Lock, Code, Bug, Search, Upload, Key, Clock, Globe, Network, Download, FileText, Cpu, Database, Terminal, Hexagon, Activity } from 'lucide-react'
+import { Shield, Zap, AlertTriangle, CheckCircle, Play, Eye, Lock, Code, Bug, Search, Key, Hexagon, Activity, Download } from 'lucide-react'
 import { API_BASE_URL } from './config'
 // import './App.css'
 import Login from './components/Login'
@@ -80,11 +80,12 @@ const App: React.FC = () => {
       setScanProgress(100)
     } catch (error) {
       console.error('Scan error:', error)
+      const err = error as Error;
       // Better error message
-      if (error.message.includes('Failed to fetch')) {
+      if (err.message.includes('Failed to fetch')) {
         alert('Cannot connect to backend server. Please make sure the backend is running on port 8000.\n\nTo start the backend:\n1. Open terminal\n2. cd to backend folder\n3. Run: python main.py')
       } else {
-        alert(`Scan failed: ${error.message}`)
+        alert(`Scan failed: ${err.message}`)
       }
     } finally {
       clearInterval(progressInterval)
@@ -147,10 +148,11 @@ const App: React.FC = () => {
       console.log('PDF downloaded successfully')
     } catch (error) {
       console.error('PDF generation error:', error)
-      if (error.message.includes('Failed to fetch')) {
+      const err = error as Error;
+      if (err.message.includes('Failed to fetch')) {
         alert('Cannot connect to backend server. Please make sure the backend is running on port 8000.')
       } else {
-        alert(`PDF generation failed: ${error.message}`)
+        alert(`PDF generation failed: ${err.message}`)
       }
     } finally {
       setGeneratingPDF(false)
