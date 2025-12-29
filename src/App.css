@@ -53,11 +53,12 @@ h3 {
 }
 
 /* Container */
-.container {
+/* Container - Scoped to avoid conflict with full-width Login/Signup */
+/* .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
-}
+} */
 
 /* Navigation */
 nav {

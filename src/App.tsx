@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Shield, Zap, AlertTriangle, CheckCircle, Play, Eye, Lock, Code, Bug, Search, Key, Hexagon, Activity, Download } from 'lucide-react'
 import { API_BASE_URL } from './config'
-// import './App.css'
+import './App.css'
 import Login from './components/Login'
 import SignUp from './components/SignUp'
 
