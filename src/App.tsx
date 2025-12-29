@@ -784,25 +784,11 @@ const App: React.FC = () => {
                       <Shield className="w-8 h-8 text-white" />
                       <h2 className="text-3xl font-bold text-white">What is CYBY?</h2>
                     </div>
-                    <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                    <p className="text-gray-300 text-lg leading-relaxed">
                       CYBY is a comprehensive AI-powered web security scanning platform designed for educational
                       and ethical testing purposes. The system combines traditional vulnerability detection techniques
                       with advanced machine learning to provide accurate and actionable security assessments.
                     </p>
-                    <div className="grid grid-cols-3 gap-6 mt-8">
-                      <div className="text-center p-4 bg-white/5 rounded-xl">
-                        <div className="text-4xl font-bold text-white mb-2">80%+</div>
-                        <div className="text-sm text-gray-400">Detection Accuracy</div>
-                      </div>
-                      <div className="text-center p-4 bg-white/5 rounded-xl">
-                        <div className="text-4xl font-bold text-white mb-2">6</div>
-                        <div className="text-sm text-gray-400">Attack Vectors</div>
-                      </div>
-                      <div className="text-center p-4 bg-white/5 rounded-xl">
-                        <div className="text-4xl font-bold text-white mb-2">95%</div>
-                        <div className="text-sm text-gray-400">False Positive Reduction</div>
-                      </div>
-                    </div>
                   </div>
 
                   {/* Core Features */}
