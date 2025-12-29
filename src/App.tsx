@@ -62,6 +62,7 @@ const App: React.FC = () => {
     }, 150) // Faster updates
 
     try {
+      console.log('Connecting to backend:', API_BASE_URL);
       const response = await fetch(`${API_BASE_URL}/scan`, {
         method: 'POST',
         headers: {
@@ -76,7 +77,7 @@ const App: React.FC = () => {
       })
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
 
       const result = await response.json()
@@ -84,10 +85,11 @@ const App: React.FC = () => {
       setScanProgress(100)
     } catch (error) {
       console.error('Scan error:', error)
+      console.error('Backend URL:', API_BASE_URL)
       const err = error as Error;
       // Better error message
       if (err.message.includes('Failed to fetch')) {
-        alert('Cannot connect to backend server. Please make sure the backend is running on port 8000.\n\nTo start the backend:\n1. Open terminal\n2. cd to backend folder\n3. Run: python main.py')
+        alert(`Cannot connect to backend server at ${API_BASE_URL}.\n\nPlease check:\n1. Backend is deployed and running\n2. CORS is configured correctly\n3. Network connection is stable`)
       } else {
         alert(`Scan failed: ${err.message}`)
       }
