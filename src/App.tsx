@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Shield, Zap, AlertTriangle, CheckCircle, Play, Eye, Lock, Code, Bug, Search, Key, Hexagon, Activity, Download } from 'lucide-react'
+import { Shield, Zap, AlertTriangle, CheckCircle, Play, Eye, Lock, Code, Bug, Search, Key, Activity, Download, AlertCircle } from 'lucide-react'
+import { SiReact, SiPython, SiTypescript, SiTailwindcss, SiFramer, SiFastapi } from 'react-icons/si'
 import { API_BASE_URL } from './config'
 import './App.css'
 import Login from './components/Login'
 import SignUp from './components/SignUp'
+import { HeroGeometric } from './components/ui/hero-geometric'
+import { WavyBackground } from './components/ui/wavy-background'
+import LogoLoop from './components/ui/LogoLoop'
 
 interface Vulnerability {
   type: string
@@ -199,8 +203,9 @@ const App: React.FC = () => {
         </div>
       </div>
 
+
       {/* Navigation */}
-      <nav className="relative z-50 border-b border-green-500/20 bg-black/50 backdrop-blur-sm">
+      <nav className="relative z-50 border-b border-white/10 bg-black/50 backdrop-blur-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <motion.div
@@ -210,22 +215,22 @@ const App: React.FC = () => {
               transition={{ duration: 0.5 }}
             >
               <div className="relative">
-                <Hexagon className="w-10 h-10 text-cyan-400" />
-                <Activity className="w-5 h-5 text-green-400 absolute -top-1 -right-1" />
+                <Shield className="w-10 h-10 text-white" />
+                <Activity className="w-5 h-5 text-gray-400 absolute -top-1 -right-1" />
               </div>
-              <span className="text-3xl font-bold bg-gradient-to-r from-cyan-400 via-green-400 to-emerald-400 bg-clip-text text-transparent tracking-wider">
+              <span className="text-3xl font-bold text-white tracking-wider">
                 CYBY
               </span>
             </motion.div>
 
             <div className="flex items-center space-x-8">
-              {['HOME', 'SCANNER', 'ABOUT', 'LOGIN'].map((view) => (
+              {['LOGIN', 'HOME', 'SCANNER', 'ABOUT'].map((view) => (
                 <button
                   key={view.toLowerCase()}
                   onClick={() => setCurrentView(view.toLowerCase() as any)}
-                  className={`transition-all duration-200 hover:text-green-400 ${currentView === view.toLowerCase()
-                    ? 'text-green-400 border-b-2 border-green-400'
-                    : 'text-gray-300 hover:border-b-2 hover:border-green-400/50'
+                  className={`transition-all duration-200 hover:text-white ${currentView === view.toLowerCase()
+                    ? 'text-white border-b-2 border-white'
+                    : 'text-gray-400 hover:border-b-2 hover:border-white/50'
                     }`}
                 >
                   {view}
@@ -236,130 +241,189 @@ const App: React.FC = () => {
         </div>
       </nav>
 
+
       {/* Main Content */}
       <main className="relative z-10">
         <AnimatePresence mode="wait">
           {currentView === 'home' && (
             <motion.div
               key="home"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="container mx-auto px-6 py-16"
             >
-              {/* Hero Section */}
-              <div className="text-center mb-16">
-                <motion.h1
-                  className="text-6xl font-bold mb-6"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                >
-                  <span className="bg-gradient-to-r from-green-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                    Protect Your Systems
-                  </span>
-                </motion.h1>
-
-                <motion.p
-                  className="text-2xl text-gray-300 mb-8 max-w-4xl mx-auto font-medium"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                >
-                  AI Based vulnerability scanner for testing common website security flaws
-                </motion.p>
-
-                <motion.div
-                  className="flex flex-col sm:flex-row gap-4 justify-center"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
-                >
-                  <button
-                    onClick={() => setCurrentView('scanner')}
-                    className="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-black font-bold rounded-lg hover:from-green-400 hover:to-emerald-400 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 flex items-center justify-center gap-3"
-                  >
-                    <Play className="w-5 h-5" />
-                    <span>Start Security Scan</span>
-                  </button>
-
-                  <button
-                    onClick={() => setCurrentView('about')}
-                    className="px-8 py-4 border border-green-400 text-green-400 font-bold rounded-lg hover:bg-green-400/10 transition-all duration-300"
-                  >
-                    Learn More
-                  </button>
-                </motion.div>
-              </div>
-
-              {/* Features Grid */}
-              <div className="grid md:grid-cols-3 gap-8 mb-16">
-                {[
-                  {
-                    icon: <Shield className="w-12 h-12 text-green-400" />,
-                    title: "AI-Powered Detection",
-                    description: "Advanced ML algorithms detect 6 vulnerability types with 80+% accuracy"
-                  },
-                  {
-                    icon: <Zap className="w-12 h-12 text-emerald-400" />,
-                    title: "Real-time Scanning",
-                    description: "Lightning-fast comprehensive security assessment"
-                  },
-                  {
-                    icon: <Lock className="w-12 h-12 text-cyan-400" />,
-                    title: "Professional Reports",
-                    description: "Detailed PDF reports and remediation guides"
-                  }
-                ].map((feature, index) => (
+              <HeroGeometric
+                badge="Security Scanner"
+                title1="Protect Your Systems"
+                title2="AI-Powered Vulnerability Detection"
+                description="Advanced ML algorithms detect 6 vulnerability types with 80%+ accuracy in real-time"
+              >
+                <div className="max-w-6xl mx-auto">
+                  {/* CTA Section */}
                   <motion.div
-                    key={index}
-                    className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-8 hover:border-green-400/50 transition-all duration-300"
+                    className="text-center mb-12"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
-                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.8, delay: 1.0 }}
                   >
-                    <div className="mb-4">{feature.icon}</div>
-                    <h3 className="text-xl font-bold mb-3 text-green-400">{feature.title}</h3>
-                    <p className="text-gray-300">{feature.description}</p>
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                      Secure Your Digital Assets Today
+                    </h2>
+                    <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                      Identify vulnerabilities before attackers do with our AI-powered security scanner
+                    </p>
                   </motion.div>
-                ))}
-              </div>
 
-              {/* Advanced Features */}
-              <div className="bg-gray-800/30 border border-gray-700/50 rounded-xl p-8 mb-16">
-                <h2 className="text-3xl font-bold mb-6 text-center text-green-400">Advanced Security Features</h2>
-                <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
-                  {[
-                    { name: 'SQL Injection', icon: <Code className="w-6 h-6" /> },
-                    { name: 'XSS Detection', icon: <Bug className="w-6 h-6" /> },
-                    { name: 'CSRF Protection', icon: <Shield className="w-6 h-6" /> },
-                    { name: 'Directory Traversal', icon: <Search className="w-6 h-6" /> },
-                    { name: 'Auth Bypass', icon: <Key className="w-6 h-6" /> },
-                    { name: 'Security Headers', icon: <Lock className="w-6 h-6" /> },
-                  ].map((feature, index) => (
-                    <div key={index} className="flex items-center space-x-2 text-gray-300 hover:text-green-400 transition-colors">
-                      <span className="text-green-400">{feature.icon}</span>
-                      <span className="text-sm">{feature.name}</span>
+                  {/* CTA Buttons */}
+                  <motion.div
+                    className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 1.2 }}
+                  >
+                    <button
+                      onClick={() => setCurrentView('scanner')}
+                      className="px-8 py-4 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-white/25 flex items-center justify-center gap-3"
+                    >
+                      <Play className="w-5 h-5" />
+                      <span>Start Security Scan</span>
+                    </button>
+
+                    <button
+                      onClick={() => setCurrentView('about')}
+                      className="px-8 py-4 border border-white/30 text-white font-bold rounded-lg hover:bg-white/10 transition-all duration-300"
+                    >
+                      Learn More
+                    </button>
+                  </motion.div>
+
+                  {/* Features Grid */}
+                  <div className="grid md:grid-cols-3 gap-8 mb-16">
+                    {[
+                      {
+                        icon: <Shield className="w-12 h-12 text-gray-300" />,
+                        title: "AI-Powered Detection",
+                        description: "Advanced ML algorithms detect 6 vulnerability types with 80+% accuracy"
+                      },
+                      {
+                        icon: <Zap className="w-12 h-12 text-gray-300" />,
+                        title: "Real-time Scanning",
+                        description: "Lightning-fast comprehensive security assessment"
+                      },
+                      {
+                        icon: <Lock className="w-12 h-12 text-gray-300" />,
+                        title: "Professional Reports",
+                        description: "Detailed PDF reports and remediation guides"
+                      }
+                    ].map((feature, index) => (
+                      <motion.div
+                        key={index}
+                        className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8 hover:border-white/30 transition-all duration-300"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 1.4 + index * 0.1 }}
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        <div className="mb-4">{feature.icon}</div>
+                        <h3 className="text-xl font-bold mb-3 text-white">{feature.title}</h3>
+                        <p className="text-gray-400">{feature.description}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* Advanced Features */}
+                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8">
+                    <h2 className="text-3xl font-bold mb-6 text-center text-white">Advanced Security Features</h2>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
+                      {[
+                        { name: 'SQL Injection', icon: <Code className="w-6 h-6" /> },
+                        { name: 'XSS Detection', icon: <Bug className="w-6 h-6" /> },
+                        { name: 'CSRF Protection', icon: <Shield className="w-6 h-6" /> },
+                        { name: 'Directory Traversal', icon: <Search className="w-6 h-6" /> },
+                        { name: 'Auth Bypass', icon: <Key className="w-6 h-6" /> },
+                        { name: 'Security Headers', icon: <Lock className="w-6 h-6" /> },
+                      ].map((feature, index) => (
+                        <div key={index} className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
+                          <span className="text-gray-300">{feature.icon}</span>
+                          <span className="text-sm">{feature.name}</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </div>
+              </HeroGeometric>
 
-              {/* Description Section */}
+              {/* Our Mission Section */}
               <motion.div
-                className="bg-gray-800/30 border border-gray-700/50 rounded-xl p-8 text-center"
+                className="container mx-auto px-6 py-16"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 1.2 }}
               >
-                <h2 className="text-3xl font-bold mb-4 text-green-400">Our Mission</h2>
-                <p className="text-lg text-gray-300 max-w-4xl mx-auto">
-                  Our service aims to reduce the risk of cyber attacks and protect against unauthorized access.
-                  We provide cutting-edge AI-powered vulnerability scanning with comprehensive coverage of OWASP Top 10
-                  and beyond, helping organizations identify and fix security weaknesses before they can be exploited.
-                </p>
+                <div className="max-w-6xl mx-auto">
+                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-12">
+                    <div className="text-center mb-12">
+                      <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Our Mission</h2>
+                      <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                        Empowering organizations to build secure digital infrastructure through
+                        intelligent, automated vulnerability detection and comprehensive security insights.
+                      </p>
+                    </div>
+
+                    {/* Mission Stats */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+                      <div className="text-center">
+                        <div className="text-4xl font-bold text-white mb-2">80%+</div>
+                        <div className="text-sm text-gray-400">Detection Accuracy</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-4xl font-bold text-white mb-2">6</div>
+                        <div className="text-sm text-gray-400">Attack Vectors</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-4xl font-bold text-white mb-2">95%</div>
+                        <div className="text-sm text-gray-400">False Positive Reduction</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-4xl font-bold text-white mb-2">24/7</div>
+                        <div className="text-sm text-gray-400">Threat Monitoring</div>
+                      </div>
+                    </div>
+
+                    {/* Mission Points */}
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-xl font-bold text-white mb-3">Proactive Defense</h3>
+                        <p className="text-gray-400">
+                          Identify and neutralize security vulnerabilities before they can be exploited by malicious actors,
+                          reducing the risk of data breaches and unauthorized access.
+                        </p>
+                      </div>
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-xl font-bold text-white mb-3">AI-Powered Intelligence</h3>
+                        <p className="text-gray-400">
+                          Leverage advanced machine learning algorithms to detect complex attack patterns and anomalies
+                          with industry-leading accuracy and minimal false positives.
+                        </p>
+                      </div>
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-xl font-bold text-white mb-3">Comprehensive Coverage</h3>
+                        <p className="text-gray-400">
+                          Full OWASP Top 10 compliance with extended coverage for SQL Injection, XSS, CSRF,
+                          Directory Traversal, Authentication Bypass, and Security Headers.
+                        </p>
+                      </div>
+                      <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                        <h3 className="text-xl font-bold text-white mb-3">Actionable Insights</h3>
+                        <p className="text-gray-400">
+                          Receive detailed PDF reports with executive summaries, technical findings,
+                          and step-by-step remediation guides to fix vulnerabilities quickly.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             </motion.div>
           )}
@@ -367,316 +431,588 @@ const App: React.FC = () => {
           {currentView === 'scanner' && (
             <motion.div
               key="scanner"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="container mx-auto px-6 py-16"
             >
-              <div className="max-w-6xl mx-auto">
-                <h1 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-cyan-400 via-green-400 to-emerald-400 bg-clip-text text-transparent">
-                  CYBY Security Scanner
-                </h1>
-
-                {/* Scanner Input */}
-                <div className="vulnerability-card mb-8">
-                  <div className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Target URL
-                      </label>
-                      <input
-                        type="url"
-                        value={targetUrl}
-                        onChange={(e) => setTargetUrl(e.target.value)}
-                        placeholder="http://testphp.vulnweb.com/"
-                        className="w-full px-4 py-3 bg-gray-900/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:border-green-400 focus:ring-1 focus:ring-green-400/50 focus:outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-6">
-                        Select Scan Types (Advanced Security Testing)
-                      </label>
-                      <div className="space-y-3">
-                        {scanTypeOptions.map((type) => (
-                          <label key={type.id} className="flex items-center justify-between p-4 bg-gray-800/30 border border-gray-700/30 rounded-lg cursor-pointer hover:border-green-400/30 hover:bg-gray-800/50 transition-all duration-200 group">
-                            <div className="flex items-center space-x-4">
-                              <div className={`w-10 h-10 flex items-center justify-center rounded-lg ${scanTypes.includes(type.id) ? 'bg-green-500/20 text-green-400' : 'bg-gray-700/50 text-gray-400 group-hover:bg-green-500/10 group-hover:text-green-400'}`}>
-                                {type.icon}
-                              </div>
-                              <div className="flex-1">
-                                <div className="text-sm font-medium text-white group-hover:text-green-100 transition-colors">
-                                  {type.label}
-                                </div>
-                                <div className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors">
-                                  {type.description}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex items-center">
-                              <input
-                                type="checkbox"
-                                checked={scanTypes.includes(type.id)}
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    setScanTypes([...scanTypes, type.id])
-                                  } else {
-                                    setScanTypes(scanTypes.filter(t => t !== type.id))
-                                  }
-                                }}
-                                className="w-5 h-5 text-green-500 bg-gray-700 border-gray-600 rounded focus:ring-green-500 focus:ring-2"
-                              />
-                            </div>
+              <HeroGeometric
+                badge="Security Scanner"
+                title1="CYBY Security Scanner"
+                title2="Advanced Vulnerability Detection"
+                description="Comprehensive security testing across 6 attack vectors with AI-powered analysis"
+              >
+                <div className="max-w-6xl mx-auto mt-8">
+                  {/* Scanner Input */}
+                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8 mb-8">
+                    <div className="space-y-8">
+                      {/* URL Input Section */}
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <label className="text-lg font-semibold text-white">
+                            Target URL
                           </label>
-                        ))}
-                      </div>
-                    </div>
+                          <span className="text-xs text-gray-400 bg-white/5 px-3 py-1 rounded-full">
+                            Step 1 of 2
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-400 mb-4">
+                          Enter the website URL you want to scan for security vulnerabilities
+                        </p>
+                        <input
+                          type="url"
+                          value={targetUrl}
+                          onChange={(e) => setTargetUrl(e.target.value)}
+                          placeholder="https://example.com"
+                          className="w-full px-5 py-4 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/40 focus:border-white focus:ring-2 focus:ring-white/20 focus:outline-none transition-all text-lg"
+                        />
 
-                    <div className="space-y-4">
-                      {/* Progress Bar */}
-                      {scanning && (
-                        <div className="w-full">
-                          <div className="flex justify-between text-sm text-gray-400 mb-2">
-                            <span>Scanning in progress...</span>
-                            <span>{Math.round(scanProgress)}%</span>
-                          </div>
-                          <div className="w-full bg-gray-700 rounded-full h-2">
-                            <motion.div
-                              className="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full"
-                              initial={{ width: 0 }}
-                              animate={{ width: `${scanProgress}%` }}
-                              transition={{ duration: 0.3 }}
-                            />
+                        {/* Quick Presets */}
+                        <div className="mt-4">
+                          <p className="text-xs text-gray-400 mb-2">Quick Test URLs:</p>
+                          <div className="flex flex-wrap gap-2">
+                            {[
+                              'http://testphp.vulnweb.com/',
+                              'http://testhtml5.vulnweb.com/',
+                              'http://testasp.vulnweb.com/'
+                            ].map((url) => (
+                              <button
+                                key={url}
+                                onClick={() => setTargetUrl(url)}
+                                className="text-xs px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-md text-gray-300 hover:text-white transition-all"
+                              >
+                                {url.replace('http://', '').replace('/', '')}
+                              </button>
+                            ))}
                           </div>
                         </div>
-                      )}
+                      </div>
 
-                      <button
-                        onClick={runScan}
-                        disabled={scanning}
-                        className="w-full px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-black font-bold rounded-lg hover:from-green-400 hover:to-emerald-400 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                      >
-                        {scanning ? (
-                          <div className="flex items-center justify-center space-x-2">
-                            <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
-                            <span>Running Advanced Security Scan...</span>
-                          </div>
-                        ) : (
-                          <div className="flex items-center justify-center space-x-2">
-                            <Play className="w-5 h-5" />
-                            <span>Start Comprehensive Security Scan</span>
+                      {/* Divider */}
+                      <div className="border-t border-white/10"></div>
+
+                      {/* Scan Types Section */}
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <label className="text-lg font-semibold text-white">
+                            Select Scan Types
+                          </label>
+                          <span className="text-xs text-gray-400 bg-white/5 px-3 py-1 rounded-full">
+                            Step 2 of 2
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-400 mb-6">
+                          Choose which vulnerability tests to run. Select all for comprehensive scanning.
+                        </p>
+
+                        {/* Select All Button */}
+                        <div className="mb-4">
+                          <button
+                            onClick={() => {
+                              if (scanTypes.length === scanTypeOptions.length) {
+                                setScanTypes([]);
+                              } else {
+                                setScanTypes(scanTypeOptions.map(t => t.id));
+                              }
+                            }}
+                            className="text-sm px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-lg text-white transition-all"
+                          >
+                            {scanTypes.length === scanTypeOptions.length ? 'Deselect All' : 'Select All'}
+                          </button>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-3">
+                          {scanTypeOptions.map((type) => (
+                            <label
+                              key={type.id}
+                              className={`flex items-center justify-between p-5 rounded-xl cursor-pointer transition-all duration-200 ${scanTypes.includes(type.id)
+                                ? 'bg-white/10 border-2 border-white/30'
+                                : 'bg-white/5 border-2 border-white/10 hover:border-white/20 hover:bg-white/8'
+                                }`}
+                            >
+                              <div className="flex items-center space-x-4 flex-1">
+                                <div className={`w-12 h-12 flex items-center justify-center rounded-lg transition-all ${scanTypes.includes(type.id)
+                                  ? 'bg-white/20 text-white'
+                                  : 'bg-white/5 text-white/60'
+                                  }`}>
+                                  {type.icon}
+                                </div>
+                                <div className="flex-1">
+                                  <div className="text-sm font-semibold text-white mb-1">
+                                    {type.label}
+                                  </div>
+                                  <div className="text-xs text-gray-400">
+                                    {type.description}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex items-center ml-3">
+                                <input
+                                  type="checkbox"
+                                  checked={scanTypes.includes(type.id)}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setScanTypes([...scanTypes, type.id])
+                                    } else {
+                                      setScanTypes(scanTypes.filter(t => t !== type.id))
+                                    }
+                                  }}
+                                  className="w-5 h-5 text-white bg-white/10 border-white/20 rounded focus:ring-white/50 focus:ring-2"
+                                />
+                              </div>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="border-t border-white/10"></div>
+
+                      <div className="space-y-4">
+                        {/* Scan Info */}
+                        {!scanning && scanTypes.length > 0 && (
+                          <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-3">
+                                <Shield className="w-5 h-5 text-white" />
+                                <span className="text-sm text-white font-medium">
+                                  Ready to scan
+                                </span>
+                              </div>
+                              <span className="text-xs text-gray-400 bg-white/5 px-3 py-1 rounded-full">
+                                {scanTypes.length} {scanTypes.length === 1 ? 'test' : 'tests'} selected
+                              </span>
+                            </div>
                           </div>
                         )}
-                      </button>
 
-                      {/* PDF Generation Button */}
-                      {scanResult && (
+                        {/* Progress Bar */}
+                        {scanning && (
+                          <div className="w-full">
+                            <div className="flex justify-between text-sm text-white mb-3">
+                              <span className="font-medium">Scanning in progress...</span>
+                              <span className="font-bold">{Math.round(scanProgress)}%</span>
+                            </div>
+                            <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+                              <motion.div
+                                className="bg-gradient-to-r from-white via-gray-200 to-white h-3 rounded-full relative"
+                                initial={{ width: 0 }}
+                                animate={{ width: `${scanProgress}%` }}
+                                transition={{ duration: 0.3 }}
+                              >
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse"></div>
+                              </motion.div>
+                            </div>
+                            <p className="text-xs text-gray-400 mt-2">
+                              Analyzing security vulnerabilities across {scanTypes.length} attack vectors
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Main Scan Button */}
                         <button
-                          onClick={generatePDF}
-                          disabled={generatingPDF}
-                          className="w-full px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-lg hover:from-blue-400 hover:to-cyan-400 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                          onClick={runScan}
+                          disabled={scanning || scanTypes.length === 0}
+                          className={`
+                            w-full px-8 py-5 rounded-xl font-bold text-lg
+                            transition-all duration-300 transform
+                            ${scanning || scanTypes.length === 0
+                              ? 'bg-white/10 text-white/40 cursor-not-allowed'
+                              : 'bg-black text-white hover:bg-gray-900 hover:scale-[1.02] hover:shadow-2xl hover:shadow-black/50 border-2 border-white/20 hover:border-white/40'
+                            }
+                          `}
                         >
-                          {generatingPDF ? (
-                            <div className="flex items-center justify-center space-x-2">
-                              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                              <span>Generating PDF Report...</span>
+                          {scanning ? (
+                            <div className="flex items-center justify-center space-x-3">
+                              <div className="w-6 h-6 border-3 border-white/20 border-t-white rounded-full animate-spin"></div>
+                              <span>Running Security Scan...</span>
                             </div>
                           ) : (
-                            <div className="flex items-center justify-center space-x-2">
-                              <Download className="w-5 h-5" />
-                              <span>Generate PDF Report</span>
+                            <div className="flex items-center justify-center space-x-3">
+                              <Shield className="w-6 h-6" />
+                              <span>Start Comprehensive Security Scan</span>
+                              {scanTypes.length > 0 && (
+                                <span className="ml-2 px-2 py-0.5 bg-white/20 rounded-full text-sm">
+                                  {scanTypes.length}
+                                </span>
+                              )}
                             </div>
                           )}
                         </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
 
-                {/* Scan Results */}
-                {scanResult && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="space-y-6"
-                  >
-                    {/* Risk Overview */}
-                    <div className="vulnerability-card">
-                      <h3 className="text-2xl font-bold mb-4 text-green-400">Security Assessment Results</h3>
-                      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                        <div className="text-center">
-                          <div className="text-3xl font-bold text-red-400">
-                            {scanResult.risk_score}
-                          </div>
-                          <div className="text-sm text-gray-400">Risk Score</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-3xl font-bold text-white">
-                            {scanResult.total_vulnerabilities}
-                          </div>
-                          <div className="text-sm text-gray-400">Total Issues</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-3xl font-bold text-red-500">
-                            {scanResult.scan_summary.vulnerability_breakdown.high}
-                          </div>
-                          <div className="text-sm text-gray-400">High/Critical</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-3xl font-bold text-yellow-400">
-                            {scanResult.scan_summary.vulnerability_breakdown.medium}
-                          </div>
-                          <div className="text-sm text-gray-400">Medium</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-3xl font-bold text-green-400">
-                            {scanResult.scan_summary.vulnerability_breakdown.low}
-                          </div>
-                          <div className="text-sm text-gray-400">Low</div>
-                        </div>
+                        {/* Helper Text */}
+                        {scanTypes.length === 0 && !scanning && (
+                          <p className="text-center text-sm text-gray-400">
+                            Please select at least one scan type to begin
+                          </p>
+                        )}
+
+                        {/* PDF Generation Button */}
+                        {scanResult && (
+                          <button
+                            onClick={generatePDF}
+                            disabled={generatingPDF}
+                            className="w-full px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-lg hover:from-blue-400 hover:to-cyan-400 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                          >
+                            {generatingPDF ? (
+                              <div className="flex items-center justify-center space-x-2">
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                <span>Generating PDF Report...</span>
+                              </div>
+                            ) : (
+                              <div className="flex items-center justify-center space-x-2">
+                                <Download className="w-5 h-5" />
+                                <span>Generate PDF Report</span>
+                              </div>
+                            )}
+                          </button>
+                        )}
                       </div>
                     </div>
+                  </div>
 
-                    {/* Vulnerabilities List */}
-                    <div className="vulnerability-card">
-                      <h3 className="text-2xl font-bold mb-4 text-green-400">Detailed Vulnerability Report</h3>
-                      {scanResult.vulnerabilities.length > 0 ? (
-                        <div className="space-y-4">
-                          {scanResult.vulnerabilities.map((vuln, index) => (
-                            <div key={index} className="border border-gray-600/30 rounded-lg p-4 hover:border-green-400/30 transition-colors">
-                              <div className="flex items-center justify-between mb-2">
-                                <h4 className="font-semibold text-white">{vuln.type}</h4>
-                                <span className={`px-3 py-1 rounded-full text-xs font-medium flex items-center space-x-1 ${getSeverityColor(vuln.severity)}`}>
-                                  {getSeverityIcon(vuln.severity)}
-                                  <span>{vuln.severity}</span>
-                                </span>
-                              </div>
-                              <p className="text-gray-300 text-sm mb-2">{vuln.description}</p>
-                              <p className="text-green-300 text-xs">
-                                💡 <strong>Recommendation:</strong> {vuln.recommendation}
-                              </p>
-                              {vuln.evidence && (
-                                <div className="mt-2 p-2 bg-gray-900/50 rounded text-xs text-gray-400">
-                                  <strong>Evidence:</strong> {JSON.stringify(vuln.evidence, null, 2)}
-                                </div>
-                              )}
+                  {/* Scan Results */}
+                  {scanResult && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5 }}
+                      className="space-y-6"
+                    >
+                      {/* Risk Overview */}
+                      <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8">
+                        <h3 className="text-2xl font-bold mb-4 text-white">Security Assessment Results</h3>
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                          <div className="text-center">
+                            <div className="text-3xl font-bold text-red-400">
+                              {scanResult.risk_score}
                             </div>
-                          ))}
+                            <div className="text-sm text-white/60">Risk Score</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-3xl font-bold text-yellow-400">
+                              {scanResult.total_vulnerabilities}
+                            </div>
+                            <div className="text-sm text-white/60">Total Issues</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-3xl font-bold text-red-400">
+                              {scanResult.scan_summary.vulnerability_breakdown.critical || 0}
+                            </div>
+                            <div className="text-sm text-white/60">Critical</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-3xl font-bold text-orange-400">
+                              {scanResult.scan_summary.vulnerability_breakdown.high}
+                            </div>
+                            <div className="text-sm text-white/60">High</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-3xl font-bold text-yellow-400">
+                              {scanResult.scan_summary.vulnerability_breakdown.medium}
+                            </div>
+                            <div className="text-sm text-white/60">Medium</div>
+                          </div>
                         </div>
-                      ) : (
-                        <div className="text-center py-8">
-                          <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
-                          <p className="text-gray-300 text-lg">No vulnerabilities found!</p>
-                          <p className="text-gray-400 text-sm">The target appears to be secure against the tested attack vectors.</p>
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </div>
+                      </div>
+
+                      {/* Vulnerabilities List */}
+                      <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8">
+                        <h3 className="text-2xl font-bold mb-6 text-white">Detected Vulnerabilities</h3>
+                        {scanResult.vulnerabilities.length > 0 ? (
+                          <div className="space-y-4">
+                            {scanResult.vulnerabilities.map((vuln, index) => (
+                              <div key={index} className="bg-white/5 border border-white/10 rounded-lg p-6 hover:border-red-400/30 transition-all">
+                                <div className="flex items-start justify-between mb-3">
+                                  <div className="flex items-center space-x-3">
+                                    {getSeverityIcon(vuln.severity)}
+                                    <h4 className="text-lg font-semibold text-white">{vuln.type}</h4>
+                                  </div>
+                                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getSeverityColor(vuln.severity)}`}>
+                                    {vuln.severity}
+                                  </span>
+                                </div>
+                                <p className="text-white/70 mb-3">{vuln.description}</p>
+                                <div className="bg-white/5 rounded-lg p-4">
+                                  <p className="text-sm text-white/60 mb-2"><strong className="text-white/80">Recommendation:</strong></p>
+                                  <p className="text-sm text-white/70">{vuln.recommendation}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="text-center py-8">
+                            <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
+                            <p className="text-white text-lg">No vulnerabilities found!</p>
+                            <p className="text-white/60 text-sm">The target appears to be secure against the tested attack vectors.</p>
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+              </HeroGeometric>
             </motion.div>
           )}
 
           {currentView === 'about' && (
             <motion.div
               key="about"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="container mx-auto px-6 py-16"
             >
-              <div className="max-w-4xl mx-auto">
-                <h1 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-cyan-400 via-green-400 to-emerald-400 bg-clip-text text-transparent">
-                  About CYBY
-                </h1>
+              <WavyBackground
+                colors={["#404040", "#525252", "#737373", "#525252", "#404040"]}
+                waveWidth={60}
+                backgroundFill="#000000"
+                blur={12}
+                speed="slow"
+                waveOpacity={0.2}
+                containerClassName="min-h-screen"
+                className="w-full max-w-6xl mx-auto px-6 pt-24 pb-16"
+              >
+                <div className="max-w-5xl mx-auto">
+                  <h1 className="text-6xl font-bold mb-16 text-center bg-gradient-to-r from-white via-gray-300 to-gray-500 bg-clip-text text-transparent">
+                    About
+                  </h1>
 
-                <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-8 space-y-6">
-                  <h2 className="text-2xl font-bold text-green-400 mb-4">Project Overview</h2>
-                  <p className="text-gray-300 text-lg leading-relaxed">
-                    CYBY is a comprehensive AI-powered web security scanning platform designed for educational
-                    and ethical testing purposes. The system combines traditional vulnerability detection techniques
-                    with advanced machine learning to provide accurate and actionable security assessments across 6 attack vectors with 80%+ accuracy.
-                  </p>
-
-                  <h3 className="text-xl font-bold text-white mt-8 mb-4">Advanced Security Features</h3>
-                  <ul className="space-y-3 text-gray-300">
-                    <li className="flex items-start">
-                      <span className="text-green-400 mr-3">•</span>
-                      <span><strong>Comprehensive Vulnerability Scanning:</strong> SQL Injection, XSS, CSRF, Security Headers, Directory Traversal, Authentication Bypass</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-green-400 mr-3">•</span>
-                      <span><strong>AI-Enhanced Detection:</strong> Advanced machine learning algorithms flag anomalous responses and reduce false positives by 95% with 80%+ accuracy</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-green-400 mr-3">•</span>
-                      <span><strong>Real-time Threat Intelligence:</strong> Integration with latest CVE databases and security advisories</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-green-400 mr-3">•</span>
-                      <span><strong>Professional Reporting:</strong> Export findings as PDF , remediation guides, and executive summaries</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="text-green-400 mr-3">•</span>
-                      <span><strong>Ethical Safety:</strong> SAFE MODE defaults to approved demo targets to ensure responsible testing</span>
-                    </li>
-                  </ul>
-
-                  <h3 className="text-xl font-bold text-white mt-8 mb-4">Technology Stack</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="bg-gray-900/50 rounded-lg p-4">
-                      <h4 className="font-semibold text-green-400 mb-2">Backend</h4>
-                      <ul className="text-gray-300 text-sm space-y-1">
-                        <li>• Python 3.11+ with FastAPI</li>
-                        <li>• BeautifulSoup4 for HTML parsing</li>
-                        <li>• Requests for HTTP testing</li>
-                        <li>• Scikit-learn for ML models</li>
-                        <li>• ReportLab for PDF generation</li>
-                      </ul>
+                  {/* Project Overview */}
+                  <div className="bg-black/40 backdrop-blur-md border-2 border-white/20 rounded-2xl p-10 mb-8">
+                    <div className="flex items-center space-x-3 mb-6">
+                      <Shield className="w-8 h-8 text-white" />
+                      <h2 className="text-3xl font-bold text-white">What is CYBY?</h2>
                     </div>
-                    <div className="bg-gray-900/50 rounded-lg p-4">
-                      <h4 className="font-semibold text-green-400 mb-2">Frontend</h4>
-                      <ul className="text-gray-300 text-sm space-y-1">
-                        <li>• React 18 with TypeScript</li>
-                        <li>• Vite for fast development</li>
-                        <li>• Framer Motion for animations</li>
-                        <li>• Tailwind CSS for styling</li>
-                        <li>• Lucide React for icons</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <h3 className="text-xl font-bold text-white mt-8 mb-4">Security Standards Compliance</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="text-center p-3 bg-gray-900/30 rounded-lg">
-                      <div className="text-green-400 font-bold">OWASP Top 10</div>
-                      <div className="text-xs text-gray-400">Full Coverage</div>
-                    </div>
-                    <div className="text-center p-3 bg-gray-900/30 rounded-lg">
-                      <div className="text-green-400 font-bold">CVE Database</div>
-                      <div className="text-xs text-gray-400">Real-time Updates</div>
-                    </div>
-                    <div className="text-center p-3 bg-gray-900/30 rounded-lg">
-                      <div className="text-green-400 font-bold">CVSS Scoring</div>
-                      <div className="text-xs text-gray-400">v3.1 Standard</div>
-                    </div>
-                    <div className="text-center p-3 bg-gray-900/30 rounded-lg">
-                      <div className="text-green-400 font-bold">NIST Framework</div>
-                      <div className="text-xs text-gray-400">Aligned</div>
-                    </div>
-                  </div>
-
-                  <div className="bg-gray-900/30 rounded-lg p-4 border border-gray-600/30 mt-6">
-                    <p className="text-gray-300 text-sm">
-                      <strong className="text-yellow-400">Important:</strong> This tool is designed for educational purposes and ethical security testing only.
-                      Always ensure you have explicit permission before scanning any target. Use responsibly and in accordance with applicable laws and regulations.
+                    <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                      CYBY is a comprehensive AI-powered web security scanning platform designed for educational
+                      and ethical testing purposes. The system combines traditional vulnerability detection techniques
+                      with advanced machine learning to provide accurate and actionable security assessments.
                     </p>
+                    <div className="grid grid-cols-3 gap-6 mt-8">
+                      <div className="text-center p-4 bg-white/5 rounded-xl">
+                        <div className="text-4xl font-bold text-white mb-2">80%+</div>
+                        <div className="text-sm text-gray-400">Detection Accuracy</div>
+                      </div>
+                      <div className="text-center p-4 bg-white/5 rounded-xl">
+                        <div className="text-4xl font-bold text-white mb-2">6</div>
+                        <div className="text-sm text-gray-400">Attack Vectors</div>
+                      </div>
+                      <div className="text-center p-4 bg-white/5 rounded-xl">
+                        <div className="text-4xl font-bold text-white mb-2">95%</div>
+                        <div className="text-sm text-gray-400">False Positive Reduction</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Core Features */}
+                  <div className="bg-black/40 backdrop-blur-md border-2 border-white/20 rounded-2xl p-10 mb-8">
+                    <div className="flex items-center space-x-3 mb-8">
+                      <Zap className="w-8 h-8 text-white" />
+                      <h3 className="text-3xl font-bold text-white">Core Features</h3>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {[
+                        {
+                          icon: <Code className="w-6 h-6" />,
+                          title: "Comprehensive Vulnerability Scanning",
+                          desc: "Detects SQL Injection, XSS, CSRF, Security Headers, Directory Traversal, and Authentication Bypass vulnerabilities"
+                        },
+                        {
+                          icon: <Shield className="w-6 h-6" />,
+                          title: "AI-Enhanced Detection",
+                          desc: "Machine learning algorithms identify anomalous responses and reduce false positives by 95%"
+                        },
+                        {
+                          icon: <Activity className="w-6 h-6" />,
+                          title: "Real-time Threat Intelligence",
+                          desc: "Integration with latest CVE databases and security advisories for up-to-date protection"
+                        },
+                        {
+                          icon: <Download className="w-6 h-6" />,
+                          title: "Professional Reporting",
+                          desc: "Generate detailed PDF reports with executive summaries and remediation guides"
+                        },
+                        {
+                          icon: <Lock className="w-6 h-6" />,
+                          title: "Ethical Safety Controls",
+                          desc: "SAFE MODE ensures responsible testing with approved demo targets only"
+                        },
+                        {
+                          icon: <CheckCircle className="w-6 h-6" />,
+                          title: "OWASP Compliance",
+                          desc: "Full coverage of OWASP Top 10 security risks and industry best practices"
+                        }
+                      ].map((feature, index) => (
+                        <div key={index} className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-white/30 transition-all">
+                          <div className="flex items-start space-x-4">
+                            <div className="bg-white/10 p-3 rounded-lg text-white flex-shrink-0">
+                              {feature.icon}
+                            </div>
+                            <div>
+                              <h4 className="font-bold text-white mb-2">{feature.title}</h4>
+                              <p className="text-gray-400 text-sm">{feature.desc}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Technology Stack */}
+                  <div className="bg-black/40 backdrop-blur-md border-2 border-white/20 rounded-2xl p-6 mb-8">
+                    <div className="flex items-center space-x-2 mb-4">
+                      <Code className="w-6 h-6 text-white" />
+                      <h3 className="text-2xl font-bold text-white">Technology Stack</h3>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {/* Backend Technologies */}
+                      <div>
+                        <div className="flex items-center space-x-2 mb-2">
+                          <div className="bg-gradient-to-r from-white to-gray-400 px-2.5 py-1 rounded-md">
+                            <span className="font-bold text-black text-xs">Backend</span>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="bg-white/5 border border-white/10 rounded-lg p-2 hover:bg-white/10 hover:border-white/30 transition-all">
+                            <div className="flex items-center space-x-2">
+                              <SiPython className="w-5 h-5 text-[#3776AB] flex-shrink-0" />
+                              <div>
+                                <h4 className="font-semibold text-white text-xs">Python 3.11+</h4>
+                                <p className="text-gray-400 text-[10px]">Core backend language</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-white/30 transition-all group">
+                            <div className="flex items-center space-x-3 mb-3">
+                              <SiFastapi className="w-8 h-8 text-[#009688]" />
+                              <h4 className="font-bold text-white text-lg">FastAPI</h4>
+                            </div>
+                            <p className="text-gray-400 text-sm">High-performance REST API framework</p>
+                          </div>
+
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-white/30 transition-all group">
+                            <div className="flex items-center space-x-3 mb-3">
+                              <Code className="w-8 h-8 text-white" />
+                              <h4 className="font-bold text-white text-lg">BeautifulSoup4</h4>
+                            </div>
+                            <p className="text-gray-400 text-sm">HTML parsing and web scraping</p>
+                          </div>
+
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-white/30 transition-all group">
+                            <div className="flex items-center space-x-3 mb-3">
+                              <Activity className="w-8 h-8 text-white" />
+                              <h4 className="font-bold text-white text-lg">Requests</h4>
+                            </div>
+                            <p className="text-gray-400 text-sm">HTTP library for security testing</p>
+                          </div>
+
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-white/30 transition-all group">
+                            <div className="flex items-center space-x-3 mb-3">
+                              <Zap className="w-8 h-8 text-white" />
+                              <h4 className="font-bold text-white text-lg">Scikit-learn</h4>
+                            </div>
+                            <p className="text-gray-400 text-sm">Machine learning for threat detection</p>
+                          </div>
+
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-white/30 transition-all group">
+                            <div className="flex items-center space-x-3 mb-3">
+                              <Download className="w-8 h-8 text-white" />
+                              <h4 className="font-bold text-white text-lg">ReportLab</h4>
+                            </div>
+                            <p className="text-gray-400 text-sm">Professional PDF report generation</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Frontend Technologies */}
+                      <div>
+                        <div className="flex items-center space-x-2 mb-4">
+                          <div className="bg-gradient-to-r from-white to-gray-400 px-3 py-1.5 rounded-lg">
+                            <span className="font-bold text-black text-sm">Frontend</span>
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-white/30 transition-all group">
+                            <div className="flex items-center space-x-3 mb-3">
+                              <SiReact className="w-8 h-8 text-[#61DAFB]" />
+                              <h4 className="font-bold text-white text-lg">React 18</h4>
+                            </div>
+                            <p className="text-gray-400 text-sm">Modern UI library with TypeScript</p>
+                          </div>
+
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-white/30 transition-all group">
+                            <div className="flex items-center space-x-3 mb-3">
+                              <SiTypescript className="w-8 h-8 text-[#3178C6]" />
+                              <h4 className="font-bold text-white text-lg">TypeScript</h4>
+                            </div>
+                            <p className="text-gray-400 text-sm">Type-safe JavaScript development</p>
+                          </div>
+
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-white/30 transition-all group">
+                            <div className="flex items-center space-x-3 mb-3">
+                              <Zap className="w-8 h-8 text-[#646CFF]" />
+                              <h4 className="font-bold text-white text-lg">Vite</h4>
+                            </div>
+                            <p className="text-gray-400 text-sm">Lightning-fast build tool</p>
+                          </div>
+
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-white/30 transition-all group">
+                            <div className="flex items-center space-x-3 mb-3">
+                              <SiFramer className="w-8 h-8 text-[#0055FF]" />
+                              <h4 className="font-bold text-white text-lg">Framer Motion</h4>
+                            </div>
+                            <p className="text-gray-400 text-sm">Smooth animations and transitions</p>
+                          </div>
+
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-white/30 transition-all group">
+                            <div className="flex items-center space-x-3 mb-3">
+                              <SiTailwindcss className="w-8 h-8 text-[#06B6D4]" />
+                              <h4 className="font-bold text-white text-lg">Tailwind CSS</h4>
+                            </div>
+                            <p className="text-gray-400 text-sm">Utility-first CSS framework</p>
+                          </div>
+
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-white/30 transition-all group">
+                            <div className="flex items-center space-x-3 mb-3">
+                              <Shield className="w-8 h-8 text-white" />
+                              <h4 className="font-bold text-white text-lg">Lucide React</h4>
+                            </div>
+                            <p className="text-gray-400 text-sm">Beautiful icon library</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Technology Partners */}
+                  <div className="bg-black/40 backdrop-blur-md border-2 border-white/20 rounded-2xl p-10 mb-8">
+                    <div style={{ height: '120px', position: 'relative', overflow: 'hidden' }}>
+                      <LogoLoop
+                        logos={[
+                          { node: <SiReact size={48} color="#61DAFB" />, title: "React", href: "https://react.dev" },
+                          { node: <SiPython size={48} color="#3776AB" />, title: "Python", href: "https://www.python.org" },
+                          { node: <SiTypescript size={48} color="#3178C6" />, title: "TypeScript", href: "https://www.typescriptlang.org" },
+                          { node: <SiTailwindcss size={48} color="#06B6D4" />, title: "Tailwind CSS", href: "https://tailwindcss.com" },
+                          { node: <SiFramer size={48} color="#0055FF" />, title: "Framer Motion", href: "https://www.framer.com/motion" },
+                          { node: <SiFastapi size={48} color="#009688" />, title: "FastAPI", href: "https://fastapi.tiangolo.com" },
+                        ]}
+                        speed={80}
+                        direction="left"
+                        logoHeight={48}
+                        gap={60}
+                        hoverSpeed={20}
+                        scaleOnHover
+                        fadeOut
+                        fadeOutColor="#000000"
+                        ariaLabel="Technology stack"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
+              </WavyBackground>
             </motion.div>
           )}
 
@@ -691,32 +1027,35 @@ const App: React.FC = () => {
             >
               <Login onNavigate={(view) => setCurrentView(view)} />
             </motion.div>
-          )}
+          )
+          }
 
-          {currentView === 'signup' && (
-            <motion.div
-              key="signup"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="w-full"
-            >
-              <SignUp onNavigate={(view) => setCurrentView(view)} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
+          {
+            currentView === 'signup' && (
+              <motion.div
+                key="signup"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+                className="w-full"
+              >
+                <SignUp onNavigate={(view) => setCurrentView(view)} />
+              </motion.div>
+            )
+          }
+        </AnimatePresence >
+      </main >
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-gray-700/50 bg-black/50 backdrop-blur-sm mt-16">
+      < footer className="relative z-10 border-t border-gray-700/50 bg-black/50 backdrop-blur-sm mt-16" >
         <div className="container mx-auto px-6 py-8">
           <div className="text-center text-gray-400">
             <p>&copy; 2025 CYBY. Built for cybersecurity education and ethical hacking.</p>
           </div>
         </div>
-      </footer>
-    </div>
+      </footer >
+    </div >
   )
 }
 
