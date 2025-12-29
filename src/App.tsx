@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Shield, Zap, AlertTriangle, CheckCircle, Play, Eye, Lock, Code, Bug, Search, Key, Activity, Download, AlertCircle } from 'lucide-react'
+import { Shield, Zap, AlertTriangle, CheckCircle, Play, Eye, Lock, Code, Bug, Search, Key, Activity, Download } from 'lucide-react'
 import { SiReact, SiPython, SiTypescript, SiTailwindcss, SiFramer, SiFastapi } from 'react-icons/si'
 import { API_BASE_URL } from './config'
 import './App.css'
@@ -697,7 +697,7 @@ const App: React.FC = () => {
                           </div>
                           <div className="text-center">
                             <div className="text-3xl font-bold text-red-400">
-                              {scanResult.scan_summary.vulnerability_breakdown.critical || 0}
+                              {(scanResult.scan_summary.vulnerability_breakdown as any).critical || 0}
                             </div>
                             <div className="text-sm text-white/60">Critical</div>
                           </div>
