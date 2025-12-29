@@ -27,7 +27,13 @@ app = FastAPI(title="CYBY Security Scanner API", version="1.0.0")
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5000", "http://localhost:5173", "http://localhost:3000", "https://cyby-security-scanner.vercel.app"],
+    allow_origins=[
+        "http://localhost:5000", 
+        "http://localhost:5173", 
+        "http://localhost:3000",
+        "https://major-project-tau-eosin.vercel.app",
+        "https://*.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
