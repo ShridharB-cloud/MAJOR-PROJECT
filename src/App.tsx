@@ -45,8 +45,16 @@ const App: React.FC = () => {
   const [scanTypes, setScanTypes] = useState(['sqli', 'xss', 'csrf', 'headers', 'dir_traversal', 'auth_bypass'])
   const [generatingPDF, setGeneratingPDF] = useState(false)
   const [scanProgress, setScanProgress] = useState(0)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   //Callback function
+  const handleLogout = () => {
+    setIsLoggedIn(false)
+    setCurrentView('login')
+    setScanResult(null)
+    setTargetUrl('http://testphp.vulnweb.com/')
+  }
+
   const runScan = async () => {
     setScanning(true)
     setScanProgress(0)
@@ -226,7 +234,7 @@ const App: React.FC = () => {
             </motion.div>
 
             <div className="flex items-center space-x-8">
-              {['LOGIN', 'HOME', 'SCANNER', 'ABOUT'].map((view) => (
+              {(isLoggedIn ? ['HOME', 'SCANNER', 'ABOUT'] : ['LOGIN', 'SIGNUP']).map((view) => (
                 <button
                   key={view.toLowerCase()}
                   onClick={() => setCurrentView(view.toLowerCase() as any)}
@@ -238,6 +246,14 @@ const App: React.FC = () => {
                   {view}
                 </button>
               ))}
+              {isLoggedIn && (
+                <button
+                  onClick={handleLogout}
+                  className="text-gray-400 hover:text-white hover:border-b-2 hover:border-white/50 transition-all duration-200"
+                >
+                  LOGOUT
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -1013,7 +1029,7 @@ const App: React.FC = () => {
               transition={{ duration: 0.5 }}
               className="w-full"
             >
-              <Login onNavigate={(view) => setCurrentView(view)} />
+              <Login onNavigate={(view) => setCurrentView(view)} onLogin={() => setIsLoggedIn(true)} />
             </motion.div>
           )
           }

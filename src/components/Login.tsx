@@ -2,14 +2,15 @@ import SignInBlock from './SignInBlock';
 import { BeamsBackground } from './ui/beams-background';
 
 interface LoginProps {
-    onNavigate: (view: 'signup') => void;
+    onNavigate: (view: 'signup' | 'home' | 'scanner') => void;
+    onLogin: () => void;
 }
 
-const Login = ({ onNavigate }: LoginProps) => {
+const Login = ({ onNavigate, onLogin }: LoginProps) => {
     return (
         <BeamsBackground intensity="medium" className="min-h-[calc(100vh-80px)]">
             <div className="min-h-[calc(100vh-80px)] grid place-items-center p-4">
-                <SignInBlock onNavigate={onNavigate} />
+                <SignInBlock onNavigate={onNavigate} onLogin={onLogin} />
             </div>
         </BeamsBackground>
     );

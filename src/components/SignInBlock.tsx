@@ -27,10 +27,11 @@ interface FormErrors {
 }
 
 interface SignInBlockProps {
-    onNavigate: (view: 'signup') => void;
+    onNavigate: (view: 'signup' | 'home' | 'scanner') => void;
+    onLogin: () => void;
 }
 
-const SignInBlock = ({ onNavigate }: SignInBlockProps) => {
+const SignInBlock = ({ onNavigate, onLogin }: SignInBlockProps) => {
     const [formData, setFormData] = useState<SignInFormData>({
         email: "",
         password: "",
@@ -91,7 +92,10 @@ const SignInBlock = ({ onNavigate }: SignInBlockProps) => {
                 if (formData.rememberMe) {
                     localStorage.setItem("rememberMe", "true");
                 }
-                alert("Signed in successfully (demo only)");
+                // alert("Signed in successfully (demo only)");
+                // alert("Signed in successfully (demo only)");
+                onLogin();
+                onNavigate('home');
             } else {
                 setErrors({
                     general: "Invalid email or password",
