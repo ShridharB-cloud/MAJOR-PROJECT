@@ -906,9 +906,10 @@ const App: React.FC = () => {
                       <h2 className="text-3xl font-bold text-white">What is CYBY?</h2>
                     </div>
                     <p className="text-gray-300 text-lg leading-relaxed">
-                      CYBY is a comprehensive AI-powered web security scanning platform designed for educational
-                      and ethical testing purposes. The system combines traditional vulnerability detection techniques
-                      with advanced machine learning to provide accurate and actionable security assessments.
+                      CYBY is an automated web vulnerability scanning platform designed for educational and ethical
+                      security testing. The system uses rule-based payload injection and pattern-based response
+                      analysis to identify common web application vulnerabilities and provide clear, actionable
+                      security assessment results.
                     </p>
                   </div>
 
@@ -941,9 +942,9 @@ const App: React.FC = () => {
                           desc: "Generate detailed PDF reports with executive summaries and remediation guides"
                         },
                         {
-                          icon: <Lock className="w-6 h-6" />,
-                          title: "Ethical Safety Controls",
-                          desc: "SAFE MODE ensures responsible testing with approved demo targets only"
+                          icon: <Activity className="w-6 h-6" />,
+                          title: "Automated Threat Analysis",
+                          desc: "Real-time vulnerability assessment with intelligent payload testing and response analysis"
                         },
                         {
                           icon: <CheckCircle className="w-6 h-6" />,
@@ -974,22 +975,19 @@ const App: React.FC = () => {
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-4">
-                      {/* Backend Technologies */}
                       <div>
-                        <div className="flex items-center space-x-2 mb-2">
-                          <div className="bg-gradient-to-r from-white to-gray-400 px-2.5 py-1 rounded-md">
-                            <span className="font-bold text-black text-xs">Backend</span>
+                        <div className="flex items-center space-x-2 mb-4">
+                          <div className="bg-gradient-to-r from-white to-gray-400 px-3 py-1.5 rounded-lg">
+                            <span className="font-bold text-black text-sm">Backend</span>
                           </div>
                         </div>
-                        <div className="space-y-2">
-                          <div className="bg-white/5 border border-white/10 rounded-lg p-2 hover:bg-white/10 hover:border-white/30 transition-all">
-                            <div className="flex items-center space-x-2">
-                              <SiPython className="w-5 h-5 text-[#3776AB] flex-shrink-0" />
-                              <div>
-                                <h4 className="font-semibold text-white text-xs">Python 3.11+</h4>
-                                <p className="text-gray-400 text-[10px]">Core backend language</p>
-                              </div>
+                        <div className="space-y-3">
+                          <div className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-white/30 transition-all group">
+                            <div className="flex items-center space-x-3 mb-3">
+                              <SiPython className="w-8 h-8 text-[#3776AB]" />
+                              <h4 className="font-bold text-white text-lg">Python 3.11+</h4>
                             </div>
+                            <p className="text-gray-400 text-sm">Core backend language</p>
                           </div>
 
                           <div className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-white/30 transition-all group">
