@@ -614,9 +614,38 @@ def generate_pdf_report(scan_result: ScanResult) -> bytes:
                         # Description
                         story.append(Paragraph(f"Issue: {vuln.description}", normal_style))
                         
-                        # Simple recommendation
-                        simple_recommendation = get_simple_recommendation(vuln.type)
-                        story.append(Paragraph(f"Fix: {simple_recommendation}", normal_style))
+                        # Detailed Recommendation
+                        fix_text = vuln.recommendation
+                        
+                        # Enhanced fixes for Security Headers
+                        if "Security Header" in vuln.type:
+                            header_match = re.search(r"header: ([\w-]+)", vuln.description)
+                            header_match_alt = re.search(r"header value: ([\w-]+)", vuln.description) # Handle insecure value case
+                            
+                            header_name = header_match.group(1) if header_match else (header_match_alt.group(1) if header_match_alt else None)
+                            
+                            header_fixes = {
+                                "X-Content-Type-Options": "Add the header 'X-Content-Type-Options: nosniff'. This prevents browsers from incorrectly executing non-script files.",
+                                "X-Frame-Options": "Add 'X-Frame-Options: DENY'. This stops other sites from embedding your site in a frame to steal clicks.",
+                                "X-XSS-Protection": "Add 'X-XSS-Protection: 1; mode=block'. This tells the browser to block potential script attacks automatically.",
+                                "Strict-Transport-Security": "Add 'Strict-Transport-Security' header. This forces users to connect securely via HTTPS only.",
+                                "Content-Security-Policy": "Add a 'Content-Security-Policy' header. This is a powerful list that tells the browser which sources are safe to load content from.",
+                                "Referrer-Policy": "Set 'Referrer-Policy: strict-origin-when-cross-origin'. This protects user privacy by limiting what data is sent when they click a link.",
+                                "Permissions-Policy": "Add a 'Permissions-Policy' header to turn off unused features like camera or microphone access."
+                            }
+                            
+                            if header_name and header_name in header_fixes:
+                                fix_text = header_fixes[header_name]
+                            elif header_name:
+                                fix_text = f"Add the '{header_name}' header to your server settings. This adds an extra layer of security."
+
+                        # Use improved recommendations for others if available
+                        elif vuln.type in ["SQL Injection", "Cross-Site Scripting (XSS)", "Authentication Bypass", "directory Traversal", "CSRF"]:
+                            detailed_fix = get_improved_recommendation(vuln.type, vuln.severity)
+                            if detailed_fix and not detailed_fix.startswith("Configure your web server"):
+                                fix_text = detailed_fix
+
+                        story.append(Paragraph(f"Fix: {fix_text}", normal_style))
                         
                         # Impact
                         impact = get_simple_impact(vuln.type, vuln.severity)
