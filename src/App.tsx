@@ -906,10 +906,9 @@ const App: React.FC = () => {
                       <h2 className="text-3xl font-bold text-white">What is CYBY?</h2>
                     </div>
                     <p className="text-gray-300 text-lg leading-relaxed">
-                      CYBY is an automated web vulnerability scanning platform designed for educational and ethical
-                      security testing. The system uses rule-based payload injection and pattern-based response
-                      analysis to identify common web application vulnerabilities and provide clear, actionable
-                      security assessment results.
+                      CYBY is an advanced security scanning platform that combines proven rule-based detection with
+                      AI-enhanced risk assessment. The system uses pattern matching for precise vulnerability identification
+                      and machine learning algorithms to calculate intelligent risk scores based on multiple threat factors.
                     </p>
                   </div>
 
@@ -942,9 +941,9 @@ const App: React.FC = () => {
                           desc: "Generate detailed PDF reports with executive summaries and remediation guides"
                         },
                         {
-                          icon: <Activity className="w-6 h-6" />,
-                          title: "Automated Threat Analysis",
-                          desc: "Real-time vulnerability assessment with intelligent payload testing and response analysis"
+                          icon: <Zap className="w-6 h-6" />,
+                          title: "AI-Enhanced Risk Scoring",
+                          desc: "Machine learning algorithms calculate intelligent risk scores using weighted factor analysis"
                         },
                         {
                           icon: <CheckCircle className="w-6 h-6" />,

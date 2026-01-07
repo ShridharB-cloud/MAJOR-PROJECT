@@ -21,8 +21,14 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
 from reportlab.lib.units import inch
 import io
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+from ai_risk_scorer import AIRiskScorer
 
 app = FastAPI(title="CYBY Security Scanner API", version="1.0.0")
+
+# Initialize AI Risk Scorer
+ai_scorer = AIRiskScorer()
 
 # CORS middleware
 app.add_middleware(
@@ -724,18 +730,7 @@ def get_impact_explanation(vuln_type: str, severity: str) -> str:
     
     return impacts.get(vuln_type, f"A {severity.lower()} severity issue that should be addressed to improve your website's security.")
 
-def calculate_risk_score(vulnerabilities: List[Vulnerability]) -> int:
-    if not vulnerabilities:
-        return 0
-    
-    high_count = sum(1 for v in vulnerabilities if v.severity == "High")
-    medium_count = sum(1 for v in vulnerabilities if v.severity == "Medium")
-    low_count = sum(1 for v in vulnerabilities if v.severity == "Low")
 
-    
-    # Risk scoring: High=10, Medium=5, Low=2
-    score = (high_count * 10) + (medium_count * 5) + (low_count * 2)
-    return min(score, 100)  # Cap at 100
 
 @app.get("/")
 async def root():
@@ -811,8 +806,8 @@ async def scan_website(request: ScanRequest):
                 if "xss" in request.scan_types:
                     all_vulnerabilities.extend(check_xss(request.target_url, param, "test"))
         
-        # Calculate risk score
-        risk_score = calculate_risk_score(all_vulnerabilities)
+        # Calculate AI-Enhanced risk score
+        risk_score = ai_scorer.calculate_ai_risk_score(all_vulnerabilities)
         
         # Create scan summary with accuracy metrics
         scan_summary = {
