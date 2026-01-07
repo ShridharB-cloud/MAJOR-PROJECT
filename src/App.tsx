@@ -39,7 +39,7 @@ interface ScanResult {
 const App: React.FC = () => {
   //States
   const [currentView, setCurrentView] = useState<'home' | 'scanner' | 'about' | 'login' | 'signup'>('login')
-  const [targetUrl, setTargetUrl] = useState('http://testphp.vulnweb.com/')
+  const [targetUrl, setTargetUrl] = useState('')
   const [scanning, setScanning] = useState(false)
   const [scanResult, setScanResult] = useState<ScanResult | null>(null)
   const [scanTypes, setScanTypes] = useState(['sqli', 'xss', 'csrf', 'headers', 'dir_traversal', 'auth_bypass'])
@@ -52,7 +52,7 @@ const App: React.FC = () => {
     setIsLoggedIn(false)
     setCurrentView('login')
     setScanResult(null)
-    setTargetUrl('http://testphp.vulnweb.com/')
+    setTargetUrl('')
   }
 
   const runScan = async () => {
@@ -321,8 +321,8 @@ const App: React.FC = () => {
                     {[
                       {
                         icon: <Shield className="w-12 h-12 text-gray-300" />,
-                        title: "AI-Powered Detection",
-                        description: "Advanced ML algorithms detect 6 vulnerability types with 80+% accuracy"
+                        title: "Automated Scanning",
+                        description: "Comprehensive vulnerability detection across 6 major security attack vectors"
                       },
                       {
                         icon: <Zap className="w-12 h-12 text-gray-300" />,
@@ -350,25 +350,138 @@ const App: React.FC = () => {
                     ))}
                   </div>
 
-                  {/* Advanced Features */}
-                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8">
-                    <h2 className="text-3xl font-bold mb-6 text-center text-white">Advanced Security Features</h2>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
-                      {[
-                        { name: 'SQL Injection', icon: <Code className="w-6 h-6" /> },
-                        { name: 'XSS Detection', icon: <Bug className="w-6 h-6" /> },
-                        { name: 'CSRF Protection', icon: <Shield className="w-6 h-6" /> },
-                        { name: 'Directory Traversal', icon: <Search className="w-6 h-6" /> },
-                        { name: 'Auth Bypass', icon: <Key className="w-6 h-6" /> },
-                        { name: 'Security Headers', icon: <Lock className="w-6 h-6" /> },
-                      ].map((feature, index) => (
-                        <div key={index} className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
-                          <span className="text-gray-300">{feature.icon}</span>
-                          <span className="text-sm">{feature.name}</span>
+                  {/* Advanced Security Features */}
+                  <motion.div
+                    className="relative overflow-hidden rounded-2xl"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 1.8 }}
+                  >
+                    {/* Background Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-white/10 to-white/5 backdrop-blur-sm"></div>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/5 via-transparent to-cyan-500/5"></div>
+
+                    <div className="relative border border-white/20 rounded-2xl p-10">
+                      <div className="text-center mb-10">
+                        <motion.div
+                          initial={{ scale: 0.9, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          transition={{ duration: 0.5, delay: 2.0 }}
+                        >
+                          <h2 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
+                            Advanced Security Features
+                          </h2>
+                          <p className="text-gray-400 text-lg">Comprehensive protection across all attack vectors</p>
+                        </motion.div>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {[
+                          {
+                            name: 'SQL Injection',
+                            icon: <Code className="w-8 h-8" />,
+                            description: 'Database attack prevention',
+                            gradient: 'from-red-500/20 to-orange-500/20',
+                            borderGradient: 'from-red-500/50 to-orange-500/50',
+                            iconBg: 'bg-red-500/10'
+                          },
+                          {
+                            name: 'XSS Detection',
+                            icon: <Bug className="w-8 h-8" />,
+                            description: 'Script injection defense',
+                            gradient: 'from-purple-500/20 to-pink-500/20',
+                            borderGradient: 'from-purple-500/50 to-pink-500/50',
+                            iconBg: 'bg-purple-500/10'
+                          },
+                          {
+                            name: 'CSRF Protection',
+                            icon: <Shield className="w-8 h-8" />,
+                            description: 'Request forgery shield',
+                            gradient: 'from-blue-500/20 to-cyan-500/20',
+                            borderGradient: 'from-blue-500/50 to-cyan-500/50',
+                            iconBg: 'bg-blue-500/10'
+                          },
+                          {
+                            name: 'Directory Traversal',
+                            icon: <Search className="w-8 h-8" />,
+                            description: 'Path traversal blocking',
+                            gradient: 'from-yellow-500/20 to-amber-500/20',
+                            borderGradient: 'from-yellow-500/50 to-amber-500/50',
+                            iconBg: 'bg-yellow-500/10'
+                          },
+                          {
+                            name: 'Auth Bypass',
+                            icon: <Key className="w-8 h-8" />,
+                            description: 'Authentication security',
+                            gradient: 'from-green-500/20 to-emerald-500/20',
+                            borderGradient: 'from-green-500/50 to-emerald-500/50',
+                            iconBg: 'bg-green-500/10'
+                          },
+                          {
+                            name: 'Security Headers',
+                            icon: <Lock className="w-8 h-8" />,
+                            description: 'HTTP header validation',
+                            gradient: 'from-indigo-500/20 to-violet-500/20',
+                            borderGradient: 'from-indigo-500/50 to-violet-500/50',
+                            iconBg: 'bg-indigo-500/10'
+                          },
+                        ].map((feature, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 2.1 + index * 0.1 }}
+                            whileHover={{ scale: 1.05, y: -5 }}
+                            className="group relative"
+                          >
+                            {/* Gradient Border Effect */}
+                            <div className={`absolute inset-0 bg-gradient-to-br ${feature.borderGradient} rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm`}></div>
+
+                            {/* Card Content */}
+                            <div className={`relative bg-gradient-to-br ${feature.gradient} backdrop-blur-sm border border-white/10 rounded-xl p-6 h-full transition-all duration-300 group-hover:border-white/30`}>
+                              {/* Icon Container */}
+                              <div className={`${feature.iconBg} w-16 h-16 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                                <span className="text-white">{feature.icon}</span>
+                              </div>
+
+                              {/* Text Content */}
+                              <h3 className="text-xl font-bold text-white mb-2 group-hover:text-white transition-colors">
+                                {feature.name}
+                              </h3>
+                              <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors">
+                                {feature.description}
+                              </p>
+
+                              {/* Hover Indicator */}
+                              <div className="mt-4 flex items-center text-xs text-gray-500 group-hover:text-white transition-colors">
+                                <CheckCircle className="w-4 h-4 mr-1" />
+                                <span>Active</span>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+
+                      {/* Bottom Stats */}
+                      <motion.div
+                        className="mt-10 pt-8 border-t border-white/10"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 2.8 }}
+                      >
+                        <div className="grid grid-cols-2 gap-8 text-center max-w-md mx-auto">
+                          <div>
+                            <div className="text-3xl font-bold text-white mb-1">6</div>
+                            <div className="text-sm text-gray-400">Attack Vectors</div>
+                          </div>
+                          <div>
+                            <div className="text-3xl font-bold text-white mb-1">30+</div>
+                            <div className="text-sm text-gray-400">Test Payloads</div>
+                          </div>
                         </div>
-                      ))}
+                      </motion.div>
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
               </HeroGeometric>
 
@@ -390,11 +503,7 @@ const App: React.FC = () => {
                     </div>
 
                     {/* Mission Stats */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-                      <div className="text-center">
-                        <div className="text-4xl font-bold text-white mb-2">80%+</div>
-                        <div className="text-sm text-gray-400">Detection Accuracy</div>
-                      </div>
+                    <div className="grid grid-cols-2 gap-8 mb-12 max-w-lg mx-auto">
                       <div className="text-center">
                         <div className="text-4xl font-bold text-white mb-2">6</div>
                         <div className="text-sm text-gray-400">Attack Vectors</div>
@@ -402,10 +511,6 @@ const App: React.FC = () => {
                       <div className="text-center">
                         <div className="text-4xl font-bold text-white mb-2">95%</div>
                         <div className="text-sm text-gray-400">False Positive Reduction</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-4xl font-bold text-white mb-2">24/7</div>
-                        <div className="text-sm text-gray-400">Threat Monitoring</div>
                       </div>
                     </div>
 
