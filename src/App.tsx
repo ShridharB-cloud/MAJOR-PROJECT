@@ -595,9 +595,7 @@ const App: React.FC = () => {
                           <p className="text-xs text-gray-400 mb-2">Quick Test URLs:</p>
                           <div className="flex flex-wrap gap-2">
                             {[
-                              'http://testphp.vulnweb.com/',
-                              'http://testhtml5.vulnweb.com/',
-                              'http://testasp.vulnweb.com/'
+                              'https://klsvdit.edu.in/'
                             ].map((url) => (
                               <button
                                 key={url}
